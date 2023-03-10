@@ -7,7 +7,6 @@
 
 
 import Combine
-import CoreLocation
 
 public protocol SystemDidDetermineStateForRegionUseCase {
     

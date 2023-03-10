@@ -5,8 +5,6 @@
 //  Created by at-plan-net on 01.02.2023.
 //
 
-import CoreLocation
-
 public struct RealSystemGetMonitoredRegionsUseCase {
     
     // MARK: - Properties
