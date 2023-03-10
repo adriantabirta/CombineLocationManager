@@ -8,7 +8,7 @@ This package try to solve:
 - [x] Replace closures with Combine publishers 
 - [x] Ready to use **UseCases** (Clean Arhitecture)
 - [x] Public interfaces for mocks
-- [] ...
+- [ ] ...
 
 ### Swift Package Manager:
 
