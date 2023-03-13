@@ -5,7 +5,6 @@
 //  Created by Adrian Tabirta on 10.03.2023.
 //
 
-
 import Combine
 
 public protocol SystemDidDetermineStateForRegionUseCase {

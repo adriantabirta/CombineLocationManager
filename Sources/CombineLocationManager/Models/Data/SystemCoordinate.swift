@@ -9,12 +9,12 @@ public struct SystemCoordinate: Codable, Equatable {
     
     // MARK: - Properties
     
-    let latitude: Double
+    public let latitude: Double
     
-    let longitude: Double
+    public let longitude: Double
     
     // MARK: - Init
-
+    
     public init() {
         self.latitude = -1
         self.longitude = -1
