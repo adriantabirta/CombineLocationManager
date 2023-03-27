@@ -5,9 +5,7 @@
 //  Created by Adrian Tabirta on 27.03.2023.
 //
 
-import Foundation
-
-struct RealSystemStopUpdatingLocationUseCase {
+public struct RealSystemStopUpdatingLocationUseCase {
     
     // MARK: - Properties
     
@@ -24,7 +22,7 @@ struct RealSystemStopUpdatingLocationUseCase {
 
 extension RealSystemStopUpdatingLocationUseCase: SystemStopUpdatingLocationUseCase {
     
-    func execute() {
+    public func execute() {
         locationManager.stopUpdatingLocation()
     }
 }

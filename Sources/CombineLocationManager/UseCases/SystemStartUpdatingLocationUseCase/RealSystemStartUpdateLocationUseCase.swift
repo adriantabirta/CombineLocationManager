@@ -5,7 +5,7 @@
 //  Created by Adrian Tabirta on 27.03.2023.
 //
 
-struct RealSystemStartUpdatingLocationUseCase {
+public struct RealSystemStartUpdatingLocationUseCase {
     
     // MARK: - Properties
     
@@ -22,7 +22,7 @@ struct RealSystemStartUpdatingLocationUseCase {
 
 extension RealSystemStartUpdatingLocationUseCase: SystemStartUpdatingLocationUseCase {
     
-    func execute() {
+    public func execute() {
         locationManager.startUpdatingLocation()        
     }
 }
