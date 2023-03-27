@@ -15,7 +15,7 @@ public struct RealSystemGetLocationsStreamUseCase {
     
     // MARK: - Init
     
-    public init(locationManagerDelegate: LocationManagerDelegate) {
+    public init(_ locationManagerDelegate: LocationManagerDelegate) {
         self.locationManagerDelegate = locationManagerDelegate
     }
 }

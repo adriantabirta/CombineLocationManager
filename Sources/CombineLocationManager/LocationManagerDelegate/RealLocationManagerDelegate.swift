@@ -21,6 +21,10 @@ public class RealLocationManagerDelegate: NSObject {
     private var rangeBeaconsSubject: PassthroughSubject<[CLBeacon], Error> = .init()
     
     private var stateForRegionSubject: PassthroughSubject<(CLRegionState, CLRegion), Never> = .init()
+    
+    public override init() {
+        super.init()
+    }
 }
 
 // MARK: - LocationManagerDelegate
