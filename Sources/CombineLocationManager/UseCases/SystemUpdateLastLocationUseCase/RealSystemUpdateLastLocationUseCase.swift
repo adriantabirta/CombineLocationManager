@@ -13,7 +13,7 @@ public struct RealSystemUpdateLastLocationUseCase {
     
     private var locationManager: LocationManager
     
-    public init(locationManager: LocationManager) {
+    public init(_ locationManager: LocationManager) {
         self.locationManager = locationManager
     }
 }

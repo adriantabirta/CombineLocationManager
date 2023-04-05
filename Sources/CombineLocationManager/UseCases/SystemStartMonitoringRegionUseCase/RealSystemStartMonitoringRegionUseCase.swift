@@ -13,7 +13,7 @@ public struct RealSystemStartMonitoringRegionUseCase {
     
     // MARK: - Init
     
-    public init(locationManager: LocationManager) {
+    public init(_ locationManager: LocationManager) {
         self.locationManager = locationManager
     }
 }

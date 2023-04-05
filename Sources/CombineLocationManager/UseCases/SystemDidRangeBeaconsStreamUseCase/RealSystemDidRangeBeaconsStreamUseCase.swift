@@ -15,7 +15,7 @@ public struct RealSystemDidRangeBeaconsStreamUseCase {
     
     // MARK: - Init
     
-    public init(locationManagerDelegate: LocationManagerDelegate) {
+    public init(_ locationManagerDelegate: LocationManagerDelegate) {
         self.locationManagerDelegate = locationManagerDelegate
     }
 }
