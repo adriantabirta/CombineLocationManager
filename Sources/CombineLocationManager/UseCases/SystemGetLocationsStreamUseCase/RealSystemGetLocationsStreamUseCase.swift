@@ -25,6 +25,6 @@ public struct RealSystemGetLocationsStreamUseCase {
 extension RealSystemGetLocationsStreamUseCase: SystemGetLocationsStreamUseCase {
     
     public func execute() -> AnyPublisher<[SystemLocation], Error> {
-        locationManagerDelegate.locationsStream
+        locationManagerDelegate.locationsStream.share().eraseToAnyPublisher()
     }
 }
