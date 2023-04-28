@@ -15,7 +15,8 @@ struct CLLocationToSystemLocationMapper {
                 coordinate: SystemCoordinate(
                     latitude: $0.coordinate.latitude,
                     longitude: $0.coordinate.longitude
-                )
+                ),
+                direction: $0.course
             )
         }
     }

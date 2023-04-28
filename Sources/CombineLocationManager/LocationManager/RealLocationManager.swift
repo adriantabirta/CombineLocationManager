@@ -31,7 +31,8 @@ extension RealLocationManager: LocationManager {
             coordinate: .init(
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude
-            )
+            ),
+            direction: location.course
         )
     }
     
