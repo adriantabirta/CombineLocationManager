@@ -52,7 +52,7 @@ extension RealLocationManager: LocationManager {
     public var currentAuthorizationStatus: SystemLocationAuthorizationStatus {
         SystemLocationAuthorizationStatus(rawValue: RealLocationManager.authorizationStatus().rawValue) ?? .notDetermined
     }
-    
+
     public func startMonitoring(for region: RegionProtocol) {
 
         if let circularRegion = region as? SystemCircularRegion {

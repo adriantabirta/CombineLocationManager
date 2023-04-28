@@ -25,6 +25,8 @@ public protocol LocationManager {
     
     func requestAlwaysAuthorization()
     
+    func requestLocation()
+    
     func startUpdatingLocation()
     
     func stopUpdatingLocation()
