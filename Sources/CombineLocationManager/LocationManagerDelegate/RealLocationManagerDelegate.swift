@@ -12,7 +12,7 @@ public class RealLocationManagerDelegate: NSObject {
     
     // MARK: - Properties
     
-    private var locationsSubject: PassthroughSubject<[CLLocation], Never> = .init()
+    private var locationsSubject: PassthroughSubject<[CLLocation], Error> = .init()
     
     private var enterRegionSubject: PassthroughSubject<CLRegion, Never> = .init()
     
@@ -31,7 +31,7 @@ public class RealLocationManagerDelegate: NSObject {
 
 extension RealLocationManagerDelegate: LocationManagerDelegate {
     
-    public var locationsStream: AnyPublisher<[SystemLocation], Never> {
+    public var locationsStream: AnyPublisher<[SystemLocation], Error> {
         locationsSubject
             .map { CLLocationToSystemLocationMapper().map(model: $0) }
             .eraseToAnyPublisher()
@@ -78,5 +78,9 @@ extension RealLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         exitRegionSubject.send(region)
+    }
+    
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        locationsSubject.send(completion: .failure(error))
     }
 }

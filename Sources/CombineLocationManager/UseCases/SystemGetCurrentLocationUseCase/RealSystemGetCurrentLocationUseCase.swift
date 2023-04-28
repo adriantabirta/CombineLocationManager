@@ -24,11 +24,11 @@ public struct RealSystemGetCurrentLocationUseCase {
 
 extension RealSystemGetCurrentLocationUseCase: SystemGetCurrentLocationUseCase {
     
-    public func execute() -> AnyPublisher<SystemLocation, Never> {
+    public func execute() -> AnyPublisher<SystemLocation, Error> {
         Just(locationManager.requestLocation())
+            .setFailureType(to: Error.self)
             .flatMap { locationManager.locationsStream.first() }
             .compactMap { $0.last }
             .eraseToAnyPublisher()
     }
 }
-

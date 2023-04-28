@@ -83,7 +83,7 @@ extension RealLocationManager: LocationManager {
         super.stopRangingBeacons(satisfying: CLBeaconIdentityConstraint(uuid: constraint.uuid))
     }
     
-    public var locationsStream: AnyPublisher<[SystemLocation], Never> {
+    public var locationsStream: AnyPublisher<[SystemLocation], Error> {
         locationManagerDelegate.locationsStream
     }
     

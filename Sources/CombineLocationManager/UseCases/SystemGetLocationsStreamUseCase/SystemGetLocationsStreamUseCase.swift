@@ -10,5 +10,5 @@ import CoreLocation
 
 public protocol SystemGetLocationsStreamUseCase {
     
-    func execute() -> AnyPublisher<[SystemLocation], Never>
+    func execute() -> AnyPublisher<[SystemLocation], Error>
 }

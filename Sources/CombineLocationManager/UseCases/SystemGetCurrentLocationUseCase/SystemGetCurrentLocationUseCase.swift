@@ -9,5 +9,5 @@ import Combine
 
 public protocol SystemGetCurrentLocationUseCase {
     
-    func execute() -> AnyPublisher<SystemLocation, Never>
+    func execute() -> AnyPublisher<SystemLocation, Error>
 }

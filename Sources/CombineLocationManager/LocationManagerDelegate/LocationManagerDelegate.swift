@@ -12,7 +12,7 @@ public protocol LocationManagerDelegate: CLLocationManagerDelegate {
     
     // MARK: - Streams
     
-    var locationsStream: AnyPublisher<[SystemLocation], Never> { get }
+    var locationsStream: AnyPublisher<[SystemLocation], Error> { get }
     
     var enterRegionStream: AnyPublisher<SystemRegion, Never> { get }
     
