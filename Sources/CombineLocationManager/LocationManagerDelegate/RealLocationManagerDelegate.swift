@@ -81,6 +81,7 @@ extension RealLocationManagerDelegate {
     }
     
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        locationsSubject.send(completion: .failure(error))
+        print(error.localizedDescription)
+        // locationsSubject.send(completion: .failure(error))
     }
 }
