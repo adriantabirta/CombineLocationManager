@@ -50,4 +50,6 @@ public protocol LocationManager {
     var didRangeBeacons: AnyPublisher<[SystemBeacon], Error> { get }
     
     var didDetermineStateForRegion: AnyPublisher<(SystemRegionState, SystemRegion), Never> { get }
+    
+    var didChangeAuthorization: AnyPublisher<SystemLocationAuthorizationStatus, Never> { get }
 }

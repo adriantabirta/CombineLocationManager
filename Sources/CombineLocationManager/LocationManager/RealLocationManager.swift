@@ -10,9 +10,11 @@ import CoreLocation
 
 public class RealLocationManager: CLLocationManager {
     
-    // MARK: - Init
+    // MARK: - Properties
     
     private var locationManagerDelegate: LocationManagerDelegate
+    
+    // MARK: - Init
     
     required public init(_ locationManagerDelegate: LocationManagerDelegate) {
         self.locationManagerDelegate = locationManagerDelegate
@@ -53,9 +55,9 @@ extension RealLocationManager: LocationManager {
     public var currentAuthorizationStatus: SystemLocationAuthorizationStatus {
         SystemLocationAuthorizationStatus(rawValue: RealLocationManager.authorizationStatus().rawValue) ?? .notDetermined
     }
-
+    
     public func startMonitoring(for region: RegionProtocol) {
-
+        
         if let circularRegion = region as? SystemCircularRegion {
             super.startMonitoring(for: SystemCircularRegionToCLCircularRegionMapper().map(from: circularRegion))
         }
@@ -102,5 +104,9 @@ extension RealLocationManager: LocationManager {
     
     public var didDetermineStateForRegion: AnyPublisher<(SystemRegionState, SystemRegion), Never> {
         locationManagerDelegate.didDetermineStateForRegion
+    }
+    
+    public var didChangeAuthorization: AnyPublisher<SystemLocationAuthorizationStatus, Never> {
+        locationManagerDelegate.didChangeAuthorization
     }
 }

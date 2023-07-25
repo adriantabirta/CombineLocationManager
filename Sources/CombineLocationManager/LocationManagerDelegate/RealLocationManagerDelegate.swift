@@ -22,6 +22,8 @@ public class RealLocationManagerDelegate: NSObject {
     
     private var stateForRegionSubject: PassthroughSubject<(CLRegionState, CLRegion), Never> = .init()
     
+    private var didChangeAuthorizationSubject: PassthroughSubject<SystemLocationAuthorizationStatus, Never> = .init()
+    
     public override init() {
         super.init()
     }
@@ -62,6 +64,10 @@ extension RealLocationManagerDelegate: LocationManagerDelegate {
                 return (stateRegion, CLRegionToSystemRegionMapper().map(from: region))
             }.eraseToAnyPublisher()
     }
+    
+    public var didChangeAuthorization: AnyPublisher<SystemLocationAuthorizationStatus, Never> {
+        didChangeAuthorizationSubject.eraseToAnyPublisher()
+    }
 }
 
 // MARK: - CLLocationManagerDelegate
@@ -80,8 +86,12 @@ extension RealLocationManagerDelegate {
         exitRegionSubject.send(region)
     }
     
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        guard let status = SystemLocationAuthorizationStatus(rawValue: CLLocationManager.authorizationStatus().rawValue) else { return }
+        didChangeAuthorizationSubject.send(status)
+    }
+    
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
-        // locationsSubject.send(completion: .failure(error))
+        debugPrint(error.localizedDescription)
     }
 }

@@ -1,6 +1,6 @@
 //
 //  SystemPrimaryCircularRegion.swift
-//  MyLoyalty
+//
 //
 //  Created by at-plan-net on 07.03.2023.
 //

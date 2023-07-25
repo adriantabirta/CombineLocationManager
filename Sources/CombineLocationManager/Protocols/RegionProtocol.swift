@@ -1,6 +1,6 @@
 //
 //  RegionProtocol.swift
-//  MyLoyalty
+//
 //
 //  Created by at-plan-net on 01.03.2023.
 //

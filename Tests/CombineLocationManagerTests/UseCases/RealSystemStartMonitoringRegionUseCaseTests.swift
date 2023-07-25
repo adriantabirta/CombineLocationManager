@@ -1,0 +1,55 @@
+//
+//  RealSystemStartMonitoringRegionUseCaseTests.swift
+//
+//
+//  Created by at-plan-net on 01.03.2023.
+//
+
+import XCTest
+import Combine
+@testable import CombineLocationManager
+
+final class RealSystemStartMonitoringRegionUseCaseTests: XCTestCase {
+    
+    // MARK: - Properties
+    
+    private var tested: RealSystemStartMonitoringRegionUseCase!
+    
+    private var locationManager: LocationManagerMock!
+    
+    private var cancellables: Set<AnyCancellable>!
+    
+    // MARK: - setUp and tearDown
+    
+    override func setUp() {
+        super.setUp()
+        
+        locationManager = LocationManagerMock(LocationManagerDelegateMock())
+
+        tested = .init(locationManager)
+                
+        cancellables = .init()
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+                
+        tested = nil
+        
+        locationManager = nil
+        
+        cancellables = nil
+    }
+}
+
+// MARK: - Tests
+
+extension RealSystemStartMonitoringRegionUseCaseTests {
+    
+    func testExecuteOk() {
+        
+        tested.execute(SystemCircularRegion.stub())
+        
+        XCTAssertEqual(locationManager.invokedStartMonitoringCount, 1, "Should be equal")
+    }
+}

@@ -1,0 +1,33 @@
+//
+//  SystemRequestWhenInUseLocationAuthorizationUseCase.swift
+//
+//
+//  Created by at-plan-net on 01.03.2023.
+//
+
+public protocol SystemRequestWhenInUseLocationAuthorizationUseCase {
+    
+    func execute()
+}
+
+public struct RealSystemRequestWhenInUseLocationAuthorizationUseCase {
+    
+    // MARK: - Properties
+    
+    private var locationManager: LocationManager
+    
+    // MARK: - Init
+    
+    public init(_ locationManager: LocationManager) {
+        self.locationManager = locationManager
+    }
+}
+
+// MARK: - SystemRequestWhenInUseLocationAuthorizationUseCase
+
+extension RealSystemRequestWhenInUseLocationAuthorizationUseCase: SystemRequestWhenInUseLocationAuthorizationUseCase {
+    
+    public func execute() {
+        locationManager.requestWhenInUseAuthorization()
+    }
+}

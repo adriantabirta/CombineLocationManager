@@ -1,6 +1,6 @@
 //
 //  SystemBeaconRegion.swift
-//  MyLoyalty
+//
 //
 //  Created by at-plan-net on 02.03.2023.
 //
