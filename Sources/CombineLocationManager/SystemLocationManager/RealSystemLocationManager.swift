@@ -1,5 +1,5 @@
 //
-//  RealLocationManager.swift
+//  RealSystemLocationManager.swift
 //
 //
 //  Created by Adrian Tabirta on 10.03.2023.
@@ -8,7 +8,7 @@
 import Combine
 import CoreLocation
 
-public class RealLocationManager: CLLocationManager {
+public class RealSystemLocationManager: CLLocationManager {
     
     // MARK: - Properties
     
@@ -25,7 +25,7 @@ public class RealLocationManager: CLLocationManager {
 
 // MARK: - LocationManager
 
-extension RealLocationManager: LocationManager {
+extension RealSystemLocationManager: SystemLocationManager {
     
     public var lastLocation: SystemLocation? {
         guard let location = self.location else { return nil }
@@ -52,10 +52,19 @@ extension RealLocationManager: LocationManager {
         )
     }
     
-    public var currentAuthorizationStatus: SystemLocationAuthorizationStatus {
-        SystemLocationAuthorizationStatus(rawValue: RealLocationManager.authorizationStatus().rawValue) ?? .notDetermined
+    @available(iOS 14.0, *)
+    public var systemAccuracyAuthorization: SystemAccuracyAuthorization {
+        .init(rawValue: super.accuracyAuthorization.rawValue) ?? .reducedAccuracy
     }
     
+    public var currentAuthorizationStatus: SystemLocationAuthorizationStatus {
+        SystemLocationAuthorizationStatus(rawValue: RealSystemLocationManager.authorizationStatus().rawValue) ?? .notDetermined
+    }
+    
+    public var currentHeadingOrientation: DeviceOrientation {
+        DeviceOrientation(rawValue: super.headingOrientation.rawValue) ?? .portrait
+    }
+        
     public func startMonitoring(for region: RegionProtocol) {
         
         if let circularRegion = region as? SystemCircularRegion {

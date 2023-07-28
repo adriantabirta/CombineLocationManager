@@ -1,5 +1,5 @@
 //
-//  LocationManager.swift
+//  SystemLocationManager.swift
 //
 //
 //  Created by Adrian Tabirta on 10.03.2023.
@@ -7,7 +7,7 @@
 
 import Combine
 
-public protocol LocationManager {
+public protocol SystemLocationManager {
     
     // MARK: - Properties
     
@@ -17,6 +17,11 @@ public protocol LocationManager {
     
     var currentAuthorizationStatus: SystemLocationAuthorizationStatus { get }
     
+    @available(iOS 14.0, *)
+    var systemAccuracyAuthorization: SystemAccuracyAuthorization { get }
+    
+    var currentHeadingOrientation: DeviceOrientation { get }
+    
     // MARK: - Methods
     
     init(_ locationManagerDelegate: LocationManagerDelegate)
@@ -25,11 +30,20 @@ public protocol LocationManager {
     
     func requestAlwaysAuthorization()
     
+    @available(iOS 14.0, *)
+    func requestTemporaryFullAccuracyAuthorization(withPurposeKey purposeKey: String)
+    
     func requestLocation()
     
     func startUpdatingLocation()
     
     func stopUpdatingLocation()
+    
+    func startUpdatingHeading()
+    
+    func stopUpdatingHeading()
+    
+    func dismissHeadingCalibrationDisplay()
     
     func startMonitoring(for region: RegionProtocol)
     

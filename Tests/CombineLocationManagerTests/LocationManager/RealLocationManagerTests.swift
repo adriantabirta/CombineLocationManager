@@ -13,7 +13,7 @@ final class RealLocationManagerTests: XCTestCase {
     
     // MARK: - Properties
     
-    private var tested: RealLocationManager!
+    private var tested: RealSystemLocationManager!
     
     private var locationManagerDelegate: LocationManagerDelegateMock!
     

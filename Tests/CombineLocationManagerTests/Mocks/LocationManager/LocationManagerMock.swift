@@ -9,8 +9,8 @@ import Combine
 import CoreLocation
 @testable import CombineLocationManager
 
-// swiftlint: disable type_body_length
-class LocationManagerMock: LocationManager {
+// swiftlint: disable type_body_length identifier_name
+class LocationManagerMock: SystemLocationManager {
 
     required init(_ locationManagerDelegate: LocationManagerDelegate) {}
 
@@ -42,6 +42,26 @@ class LocationManagerMock: LocationManager {
         invokedCurrentAuthorizationStatusGetter = true
         invokedCurrentAuthorizationStatusGetterCount += 1
         return stubbedCurrentAuthorizationStatus
+    }
+
+    var invokedSystemAccuracyAuthorizationGetter = false
+    var invokedSystemAccuracyAuthorizationGetterCount = 0
+    var stubbedSystemAccuracyAuthorization: SystemAccuracyAuthorization!
+
+    var systemAccuracyAuthorization: SystemAccuracyAuthorization {
+        invokedSystemAccuracyAuthorizationGetter = true
+        invokedSystemAccuracyAuthorizationGetterCount += 1
+        return stubbedSystemAccuracyAuthorization
+    }
+
+    var invokedCurrentHeadingOrientationGetter = false
+    var invokedCurrentHeadingOrientationGetterCount = 0
+    var stubbedCurrentHeadingOrientation: DeviceOrientation!
+
+    var currentHeadingOrientation: DeviceOrientation {
+        invokedCurrentHeadingOrientationGetter = true
+        invokedCurrentHeadingOrientationGetterCount += 1
+        return stubbedCurrentHeadingOrientation
     }
 
     var invokedLocationsStreamGetter = false
@@ -120,6 +140,18 @@ class LocationManagerMock: LocationManager {
         invokedRequestAlwaysAuthorizationCount += 1
     }
 
+    var invokedRequestTemporaryFullAccuracyAuthorization = false
+    var invokedRequestTemporaryFullAccuracyAuthorizationCount = 0
+    var invokedRequestTemporaryFullAccuracyAuthorizationParameters: (purposeKey: String, Void)?
+    var invokedRequestTemporaryFullAccuracyAuthorizationParametersList = [(purposeKey: String, Void)]()
+
+    func requestTemporaryFullAccuracyAuthorization(withPurposeKey purposeKey: String) {
+        invokedRequestTemporaryFullAccuracyAuthorization = true
+        invokedRequestTemporaryFullAccuracyAuthorizationCount += 1
+        invokedRequestTemporaryFullAccuracyAuthorizationParameters = (purposeKey, ())
+        invokedRequestTemporaryFullAccuracyAuthorizationParametersList.append((purposeKey, ()))
+    }
+
     var invokedRequestLocation = false
     var invokedRequestLocationCount = 0
 
@@ -142,6 +174,30 @@ class LocationManagerMock: LocationManager {
     func stopUpdatingLocation() {
         invokedStopUpdatingLocation = true
         invokedStopUpdatingLocationCount += 1
+    }
+
+    var invokedStartUpdatingHeading = false
+    var invokedStartUpdatingHeadingCount = 0
+
+    func startUpdatingHeading() {
+        invokedStartUpdatingHeading = true
+        invokedStartUpdatingHeadingCount += 1
+    }
+
+    var invokedStopUpdatingHeading = false
+    var invokedStopUpdatingHeadingCount = 0
+
+    func stopUpdatingHeading() {
+        invokedStopUpdatingHeading = true
+        invokedStopUpdatingHeadingCount += 1
+    }
+
+    var invokedDismissHeadingCalibrationDisplay = false
+    var invokedDismissHeadingCalibrationDisplayCount = 0
+
+    func dismissHeadingCalibrationDisplay() {
+        invokedDismissHeadingCalibrationDisplay = true
+        invokedDismissHeadingCalibrationDisplayCount += 1
     }
 
     var invokedStartMonitoring = false
@@ -192,3 +248,4 @@ class LocationManagerMock: LocationManager {
         invokedStopRangingBeaconsParametersList.append((constraint, ()))
     }
 }
+// swiftlint: enable type_body_length identifier_name

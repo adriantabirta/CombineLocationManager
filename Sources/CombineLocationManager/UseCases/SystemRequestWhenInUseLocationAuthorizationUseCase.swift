@@ -14,11 +14,11 @@ public struct RealSystemRequestWhenInUseLocationAuthorizationUseCase {
     
     // MARK: - Properties
     
-    private var locationManager: LocationManager
+    private var locationManager: SystemLocationManager
     
     // MARK: - Init
     
-    public init(_ locationManager: LocationManager) {
+    public init(_ locationManager: SystemLocationManager) {
         self.locationManager = locationManager
     }
 }

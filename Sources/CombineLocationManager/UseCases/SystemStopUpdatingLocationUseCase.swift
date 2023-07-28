@@ -14,11 +14,11 @@ public struct RealSystemStopUpdatingLocationUseCase {
     
     // MARK: - Properties
     
-    private let locationManager: LocationManager
+    private let locationManager: SystemLocationManager
     
     // MARK: - Init
     
-    public init(_ locationManager: LocationManager) {
+    public init(_ locationManager: SystemLocationManager) {
         self.locationManager = locationManager
     }
 }
