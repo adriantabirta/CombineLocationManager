@@ -18,7 +18,7 @@ public protocol SystemLocationManager {
     var currentAuthorizationStatus: SystemLocationAuthorizationStatus { get }
     
     @available(iOS 14.0, *)
-    var systemAccuracyAuthorization: SystemAccuracyAuthorization { get }
+    var currentAccuracyAuthorization: SystemAccuracyAuthorization { get }
     
     var currentHeadingOrientation: DeviceOrientation { get }
     
