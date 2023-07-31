@@ -128,4 +128,8 @@ extension RealSystemLocationManager: SystemLocationManager {
     public var didChangeAuthorization: AnyPublisher<SystemLocationAuthorizationStatus, Never> {
         locationManagerDelegate.didChangeAuthorization
     }
+    
+    public var didFailWithError: AnyPublisher<Error, Never> {
+        locationManagerDelegate.didFailWithError
+    }
 }

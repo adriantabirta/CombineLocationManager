@@ -66,4 +66,6 @@ public protocol SystemLocationManager {
     var didDetermineStateForRegion: AnyPublisher<(SystemRegionState, SystemRegion), Never> { get }
     
     var didChangeAuthorization: AnyPublisher<SystemLocationAuthorizationStatus, Never> { get }
+    
+    var didFailWithError: AnyPublisher<Error, Never> { get }
 }
