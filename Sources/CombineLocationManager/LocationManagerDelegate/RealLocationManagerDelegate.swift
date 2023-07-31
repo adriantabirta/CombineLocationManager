@@ -14,6 +14,8 @@ public class RealLocationManagerDelegate: NSObject {
     
     private var locationsSubject: PassthroughSubject<[CLLocation], Error> = .init()
     
+    private var didUpdateHeadingSubject: PassthroughSubject<CLHeading, Never> = .init()
+
     private var enterRegionSubject: PassthroughSubject<CLRegion, Never> = .init()
     
     private var exitRegionSubject: PassthroughSubject<CLRegion, Never> = .init()
@@ -39,6 +41,21 @@ extension RealLocationManagerDelegate: LocationManagerDelegate {
         locationsSubject
             .map { CLLocationToSystemLocationMapper().map(model: $0) }
             .eraseToAnyPublisher()
+    }
+    
+    public var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> {
+        didUpdateHeadingSubject
+            .map {
+                SystemHeading(
+                    magneticHeading: $0.magneticHeading,
+                    trueHeading: $0.trueHeading,
+                    headingAccuracy: $0.headingAccuracy,
+                    x: $0.x,
+                    y: $0.y,
+                    z: $0.z,
+                    timestamp: $0.timestamp
+                )
+            }.eraseToAnyPublisher()
     }
     
     public var enterRegionStream: AnyPublisher<SystemRegion, Never> {
@@ -82,6 +99,10 @@ extension RealLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         locationsSubject.send(locations)
+    }
+    
+    public func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        didUpdateHeadingSubject.send(newHeading)
     }
     
     public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {

@@ -14,6 +14,8 @@ public protocol LocationManagerDelegate: CLLocationManagerDelegate {
     
     var locationsStream: AnyPublisher<[SystemLocation], Error> { get }
     
+    var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> { get }
+    
     var enterRegionStream: AnyPublisher<SystemRegion, Never> { get }
     
     var exitRegionStream: AnyPublisher<SystemRegion, Never> { get }

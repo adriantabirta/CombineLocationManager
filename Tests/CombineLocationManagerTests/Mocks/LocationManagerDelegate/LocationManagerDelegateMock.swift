@@ -21,6 +21,16 @@ class LocationManagerDelegateMock: NSObject, LocationManagerDelegate {
         return stubbedLocationsStream
     }
 
+    var invokedDidUpdateHeadingStreamGetter = false
+    var invokedDidUpdateHeadingStreamGetterCount = 0
+    var stubbedDidUpdateHeadingStream: AnyPublisher<SystemHeading, Never>!
+
+    var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> {
+        invokedDidUpdateHeadingStreamGetter = true
+        invokedDidUpdateHeadingStreamGetterCount += 1
+        return stubbedDidUpdateHeadingStream
+    }
+
     var invokedEnterRegionStreamGetter = false
     var invokedEnterRegionStreamGetterCount = 0
     var stubbedEnterRegionStream: AnyPublisher<SystemRegion, Never>!
@@ -69,5 +79,15 @@ class LocationManagerDelegateMock: NSObject, LocationManagerDelegate {
         invokedDidChangeAuthorizationGetter = true
         invokedDidChangeAuthorizationGetterCount += 1
         return stubbedDidChangeAuthorization
+    }
+
+    var invokedDidFailWithErrorGetter = false
+    var invokedDidFailWithErrorGetterCount = 0
+    var stubbedDidFailWithError: AnyPublisher<Error, Never>!
+
+    var didFailWithError: AnyPublisher<Error, Never> {
+        invokedDidFailWithErrorGetter = true
+        invokedDidFailWithErrorGetterCount += 1
+        return stubbedDidFailWithError
     }
 }

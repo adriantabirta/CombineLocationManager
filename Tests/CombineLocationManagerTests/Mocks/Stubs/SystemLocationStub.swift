@@ -5,6 +5,7 @@
 //  Created by at-plan-net on 02.03.2023.
 //
 
+import Foundation
 @testable import CombineLocationManager
 
 extension SystemLocation: Stubbable {
@@ -12,7 +13,8 @@ extension SystemLocation: Stubbable {
     static func stub() -> SystemLocation {
         .init(
             coordinate: .stub(),
-            direction: 1
+            direction: 1,
+            timestamp: Date()
         )
     }
 }

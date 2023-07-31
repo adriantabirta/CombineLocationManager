@@ -109,6 +109,10 @@ extension RealSystemLocationManager: SystemLocationManager {
         locationManagerDelegate.locationsStream
     }
     
+    public var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> {
+        locationManagerDelegate.didUpdateHeadingStream
+    }
+    
     public var enterRegionStream: AnyPublisher<SystemRegion, Never> {
         locationManagerDelegate.enterRegionStream
     }

@@ -44,14 +44,14 @@ class LocationManagerMock: SystemLocationManager {
         return stubbedCurrentAuthorizationStatus
     }
 
-    var invokedSystemAccuracyAuthorizationGetter = false
-    var invokedSystemAccuracyAuthorizationGetterCount = 0
-    var stubbedSystemAccuracyAuthorization: SystemAccuracyAuthorization!
+    var invokedCurrentAccuracyAuthorizationGetter = false
+    var invokedCurrentAccuracyAuthorizationGetterCount = 0
+    var stubbedCurrentAccuracyAuthorization: SystemAccuracyAuthorization!
 
-    var systemAccuracyAuthorization: SystemAccuracyAuthorization {
-        invokedSystemAccuracyAuthorizationGetter = true
-        invokedSystemAccuracyAuthorizationGetterCount += 1
-        return stubbedSystemAccuracyAuthorization
+    var currentAccuracyAuthorization: SystemAccuracyAuthorization {
+        invokedCurrentAccuracyAuthorizationGetter = true
+        invokedCurrentAccuracyAuthorizationGetterCount += 1
+        return stubbedCurrentAccuracyAuthorization
     }
 
     var invokedCurrentHeadingOrientationGetter = false
@@ -72,6 +72,16 @@ class LocationManagerMock: SystemLocationManager {
         invokedLocationsStreamGetter = true
         invokedLocationsStreamGetterCount += 1
         return stubbedLocationsStream
+    }
+
+    var invokedDidUpdateHeadingStreamGetter = false
+    var invokedDidUpdateHeadingStreamGetterCount = 0
+    var stubbedDidUpdateHeadingStream: AnyPublisher<SystemHeading, Never>!
+
+    var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> {
+        invokedDidUpdateHeadingStreamGetter = true
+        invokedDidUpdateHeadingStreamGetterCount += 1
+        return stubbedDidUpdateHeadingStream
     }
 
     var invokedEnterRegionStreamGetter = false
@@ -122,6 +132,16 @@ class LocationManagerMock: SystemLocationManager {
         invokedDidChangeAuthorizationGetter = true
         invokedDidChangeAuthorizationGetterCount += 1
         return stubbedDidChangeAuthorization
+    }
+
+    var invokedDidFailWithErrorGetter = false
+    var invokedDidFailWithErrorGetterCount = 0
+    var stubbedDidFailWithError: AnyPublisher<Error, Never>!
+
+    var didFailWithError: AnyPublisher<Error, Never> {
+        invokedDidFailWithErrorGetter = true
+        invokedDidFailWithErrorGetterCount += 1
+        return stubbedDidFailWithError
     }
 
     var invokedRequestWhenInUseAuthorization = false
