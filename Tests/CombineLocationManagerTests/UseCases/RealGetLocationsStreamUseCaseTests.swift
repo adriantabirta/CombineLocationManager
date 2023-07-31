@@ -49,7 +49,7 @@ extension RealGetLocationsStreamUseCaseTests {
     func testExecuteOk() {
         let expectation = expectation(description: "RealGetLocationsStreamUseCaseTests::testExecuteOk")
         
-        let expectedResult = [SystemLocation(coordinate: .init(latitude: 1.0, longitude: 2.0), direction: 1)]
+        let expectedResult = [SystemLocation(coordinate: .init(latitude: 1.0, longitude: 2.0), direction: 1, timestamp: Date())]
         
         locationManagerDelegate.stubbedLocationsStream = Just(expectedResult).setFailureType(to: Error.self).eraseToAnyPublisher()
         

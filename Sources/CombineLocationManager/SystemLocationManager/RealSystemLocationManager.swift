@@ -34,7 +34,8 @@ extension RealSystemLocationManager: SystemLocationManager {
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude
             ),
-            direction: location.course
+            direction: location.course,
+            timestamp: location.timestamp
         )
     }
     
@@ -58,13 +59,22 @@ extension RealSystemLocationManager: SystemLocationManager {
     }
     
     public var currentAuthorizationStatus: SystemLocationAuthorizationStatus {
-        SystemLocationAuthorizationStatus(rawValue: RealSystemLocationManager.authorizationStatus().rawValue) ?? .notDetermined
+        if #available(iOS 14.0, *) {
+            return SystemLocationAuthorizationStatus(rawValue: super.authorizationStatus.rawValue) ?? .notDetermined
+        } else {
+            return SystemLocationAuthorizationStatus(rawValue: CLLocationManager.authorizationStatus().rawValue) ?? .notDetermined
+        }
+    }
+    
+    @available(iOS 14.0, *)
+    public var currentAccuracyAuthorization: SystemAccuracyAuthorization {
+        SystemAccuracyAuthorization.init(rawValue: super.accuracyAuthorization.rawValue) ?? .reducedAccuracy
     }
     
     public var currentHeadingOrientation: DeviceOrientation {
         DeviceOrientation(rawValue: super.headingOrientation.rawValue) ?? .portrait
     }
-        
+    
     public func startMonitoring(for region: RegionProtocol) {
         
         if let circularRegion = region as? SystemCircularRegion {

@@ -51,7 +51,7 @@ extension SystemBeaconTests {
     
     func testHashFunctionOk() {
         
-        let expectedResult = 7872959211916669501
+        let expectedResult = 7_872_959_211_916_669_501
         
         var hasher = Hasher()
         
