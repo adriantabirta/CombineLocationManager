@@ -12,7 +12,7 @@ public protocol SystemDidChangeLocationAuthorizationUseCase {
     func execute() -> AnyPublisher<SystemLocationAuthorizationStatus, Never>
 }
 
-struct RealSystemDidChangeLocationAuthorizationUseCase {
+public struct RealSystemDidChangeLocationAuthorizationUseCase {
     
     // MARK: - Dependencies
     
@@ -29,7 +29,7 @@ struct RealSystemDidChangeLocationAuthorizationUseCase {
 
 extension RealSystemDidChangeLocationAuthorizationUseCase: SystemDidChangeLocationAuthorizationUseCase {
     
-    func execute() -> AnyPublisher<SystemLocationAuthorizationStatus, Never> {
+    public func execute() -> AnyPublisher<SystemLocationAuthorizationStatus, Never> {
         locationManager.didChangeAuthorization
     }
 }
