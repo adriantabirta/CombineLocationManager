@@ -1,5 +1,5 @@
 //
-//  SystemDidChangeAuthorizationUseCase.swift
+//  SystemDidChangeLocationAuthorizationUseCase.swift
 //  
 //
 //  Created by Adrian Tabirta on 25.07.2023.
@@ -7,12 +7,12 @@
 
 import Combine
 
-public protocol SystemDidChangeAuthorizationUseCase {
+public protocol SystemDidChangeLocationAuthorizationUseCase {
     
     func execute() -> AnyPublisher<SystemLocationAuthorizationStatus, Never>
 }
 
-struct RealSystemDidChangeAuthorizationUseCase {
+struct RealSystemDidChangeLocationAuthorizationUseCase {
     
     // MARK: - Dependencies
     
@@ -25,9 +25,9 @@ struct RealSystemDidChangeAuthorizationUseCase {
     }
 }
 
-// MARK: - SystemDidChangeAuthorizationUseCase
+// MARK: - SystemDidChangeLocationAuthorizationUseCase
 
-extension RealSystemDidChangeAuthorizationUseCase: SystemDidChangeAuthorizationUseCase {
+extension RealSystemDidChangeLocationAuthorizationUseCase: SystemDidChangeLocationAuthorizationUseCase {
     
     func execute() -> AnyPublisher<SystemLocationAuthorizationStatus, Never> {
         locationManager.didChangeAuthorization

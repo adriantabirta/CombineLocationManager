@@ -13,7 +13,7 @@ final class RealSystemDidChangeAuthorizationUseCaseTests: XCTestCase {
     
     // MARK: - Properties
     
-    private var tested: RealSystemDidChangeAuthorizationUseCase!
+    private var tested: RealSystemDidChangeLocationAuthorizationUseCase!
     
     private var locationManager: LocationManagerMock!
     

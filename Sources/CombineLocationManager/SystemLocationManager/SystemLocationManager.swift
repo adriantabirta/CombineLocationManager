@@ -56,7 +56,7 @@ public protocol SystemLocationManager {
     // MARK: - Delegate Streams
     
     var locationsStream: AnyPublisher<[SystemLocation], Error> { get }
-    
+        
     var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> { get }
     
     var enterRegionStream: AnyPublisher<SystemRegion, Never> { get }
