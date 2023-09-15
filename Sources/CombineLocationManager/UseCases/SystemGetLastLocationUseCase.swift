@@ -30,6 +30,9 @@ public struct RealSystemGetLastLocationUseCase {
 extension RealSystemGetLastLocationUseCase: SystemGetLastLocationUseCase {
     
     public func execute() -> AnyPublisher<SystemLocation?, Never> {
-        Just(locationManager.lastLocation).eraseToAnyPublisher()
+        Just(locationManager.requestLocation())
+            .flatMap { locationManager.locationsStream.replaceError(with: []).eraseToAnyPublisher() }
+            .map { $0.last }
+            .eraseToAnyPublisher()
     }
 }
