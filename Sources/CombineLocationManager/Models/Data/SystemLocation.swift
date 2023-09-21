@@ -17,7 +17,7 @@ public struct SystemLocation: Codable, Equatable {
     public let direction: Double
     
     public var timestamp: Date
-
+    
     // MARK: - Init
     
     public init(coordinate: SystemCoordinate, direction: Double, timestamp: Date) {

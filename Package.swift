@@ -7,13 +7,11 @@ let package = Package(
     name: "CombineLocationManager",
     platforms: [.iOS(.v13)],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(name: "CombineLocationManager", type: .static, targets: ["CombineLocationManager"]),
+        .library(name: "CombineLocationManagerWithGenerics", type: .static, targets: ["CombineLocationManagerWithGenerics"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
-//        .package(url: "https://github.com/usami-k/SwiftLintPlugin", branch: "main")
+        // .package(url: "https://github.com/usami-k/SwiftLintPlugin", branch: "main")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -22,11 +20,21 @@ let package = Package(
             name: "CombineLocationManager",
             dependencies: [],
             plugins: [
-//                .plugin(name: "SwiftLintPlugin", package: "SwiftLintPlugin")
+                // .plugin(name: "SwiftLintPlugin", package: "SwiftLintPlugin")
+            ]
+        ),
+        .target(
+            name: "CombineLocationManagerWithGenerics",
+            dependencies: [],
+            plugins: [
+                // .plugin(name: "SwiftLintPlugin", package: "SwiftLintPlugin")
             ]
         ),
         .testTarget(
             name: "CombineLocationManagerTests",
             dependencies: ["CombineLocationManager"]),
+        .testTarget(
+            name: "CombineLocationManagerWithGenericsTests",
+            dependencies: ["CombineLocationManagerWithGenerics"]),
     ]
 )
