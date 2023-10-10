@@ -45,6 +45,7 @@ extension RealLocationManagerDelegate: LocationManagerDelegate {
                 $0.map {
                     T(
                         coordinate: T.Coordinate(latitude: 0, longitude: 0),
+                        horizontalAccuracy: $0.horizontalAccuracy,
                         direction: $0.course,
                         timestamp: $0.timestamp
                     )

@@ -51,12 +51,12 @@ extension RealSystemGetLastLocationUseCaseTests {
         
         let expectedResult = SystemLocation.stub()
         
-        locationManager.stubbedLastLocation = expectedResult
+        locationManager.stubbedLocationsStream = Just([expectedResult]).setFailureType(to: Error.self).eraseToAnyPublisher()
         
         tested.execute()
             .sink(receiveValue: { result in
                 XCTAssertEqual(result, expectedResult, "Should be not nil")
-                XCTAssertEqual(self.locationManager.invokedLastLocationGetterCount, 1, "Should be not nil")
+                XCTAssertEqual(self.locationManager.invokedLocationsStreamGetterCount, 1, "Should be not nil")
                 expectation.fulfill()
             })
             .store(in: &cancellables)

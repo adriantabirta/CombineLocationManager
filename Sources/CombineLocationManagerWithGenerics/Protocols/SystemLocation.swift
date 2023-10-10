@@ -15,6 +15,8 @@ public protocol SystemLocation: Equatable {
     
     var coordinate: Coordinate { get }
     
+    var horizontalAccuracy: Double { get }
+    
     var direction: Double { get }
     
     var timestamp: Date { get }
@@ -23,5 +25,5 @@ public protocol SystemLocation: Equatable {
     
     init()
     
-    init(coordinate: Coordinate, direction: Double, timestamp: Date)
+    init(coordinate: Coordinate, horizontalAccuracy: Double, direction: Double, timestamp: Date)
 }

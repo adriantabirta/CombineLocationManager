@@ -34,6 +34,7 @@ extension RealSystemLocationManager: SystemLocationManager {
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude
             ),
+            horizontalAccuracy: location.horizontalAccuracy,
             direction: location.course,
             timestamp: location.timestamp
         )
