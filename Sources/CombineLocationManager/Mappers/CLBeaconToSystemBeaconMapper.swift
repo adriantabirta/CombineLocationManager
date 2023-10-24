@@ -9,7 +9,7 @@ import CoreLocation
 
 struct CLBeaconToSystemBeaconMapper {
     
-    func map(from model: CLBeacon) -> SystemBeacon {
+    func map<T: SystemBeacon>(from model: CLBeacon) -> T where T.Constraint: SystemBeaconIdentityConstraint {
         .init(
             uuid: model.uuid,
             major: model.minor,
@@ -17,7 +17,7 @@ struct CLBeaconToSystemBeaconMapper {
             proximity: .init(rawValue: model.proximity.rawValue) ?? .unknown,
             accuracy: model.accuracy,
             rssi: model.rssi,
-            beaconIdentityConstraint: SystemBeaconIdentityConstraint(
+            beaconIdentityConstraint: T.Constraint(
                 uuid: model.uuid
             )
         )

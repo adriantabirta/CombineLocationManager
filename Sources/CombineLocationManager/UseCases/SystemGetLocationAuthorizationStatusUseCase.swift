@@ -2,7 +2,7 @@
 //  SystemGetLocationAuthorizationStatusUseCase.swift
 //
 //
-//  Created by at-plan-net on 01.03.2023.
+//  Created by at on 01.03.2023.
 //
 
 import Combine
@@ -25,7 +25,7 @@ public struct RealSystemGetLocationAuthorizationStatusUseCase {
     }
 }
 
-// MARK: - SystemGetLocationAuthorizationStatusUseCase
+// MARK: - SystemGetLocationAuthorizationStatusUseCase implementation
 
 extension RealSystemGetLocationAuthorizationStatusUseCase: SystemGetLocationAuthorizationStatusUseCase {
     

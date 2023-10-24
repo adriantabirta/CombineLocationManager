@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint: disable identifier_name
 public protocol SystemHeading {
     
     var magneticHeading: Double { get }
@@ -25,3 +26,4 @@ public protocol SystemHeading {
     
     init(magneticHeading: Double, trueHeading: Double, headingAccuracy: Double, x: Double, y: Double, z: Double, timestamp: Date)
 }
+// swiftlint: enable identifier_name

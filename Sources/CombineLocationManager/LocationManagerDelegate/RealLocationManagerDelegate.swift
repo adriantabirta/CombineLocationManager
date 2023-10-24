@@ -15,7 +15,7 @@ public class RealLocationManagerDelegate: NSObject {
     private var locationsSubject: PassthroughSubject<[CLLocation], Error> = .init()
     
     private var didUpdateHeadingSubject: PassthroughSubject<CLHeading, Never> = .init()
-
+    
     private var enterRegionSubject: PassthroughSubject<CLRegion, Never> = .init()
     
     private var exitRegionSubject: PassthroughSubject<CLRegion, Never> = .init()
@@ -28,25 +28,38 @@ public class RealLocationManagerDelegate: NSObject {
     
     private var didFailWithErrorSubject: PassthroughSubject<Error, Never> = .init()
     
+    // MARK: - Init
+    
     public override init() {
         super.init()
     }
 }
 
-// MARK: - LocationManagerDelegate
+// MARK: - LocationManagerDelegate implementation
 
 extension RealLocationManagerDelegate: LocationManagerDelegate {
     
-    public var locationsStream: AnyPublisher<[SystemLocation], Error> {
+    public func getLocationsStream<T>() -> AnyPublisher<[T], Error> where T: SystemLocation, T.Coordinate: SystemCoordinate {
         locationsSubject
-            .map { CLLocationToSystemLocationMapper().map(model: $0) }
-            .eraseToAnyPublisher()
+            .map {
+                $0.map {
+                    T(
+                        coordinate: T.Coordinate(
+                            latitude: $0.coordinate.latitude,
+                            longitude: $0.coordinate.longitude
+                        ),
+                        horizontalAccuracy: $0.horizontalAccuracy,
+                        direction: $0.course,
+                        timestamp: $0.timestamp
+                    )
+                }
+            }.eraseToAnyPublisher()
     }
     
-    public var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> {
+    public func didUpdateHeadingStream<T>() -> AnyPublisher<T, Never> where T: SystemHeading {
         didUpdateHeadingSubject
             .map {
-                SystemHeading(
+                .init(
                     magneticHeading: $0.magneticHeading,
                     trueHeading: $0.trueHeading,
                     headingAccuracy: $0.headingAccuracy,
@@ -58,31 +71,83 @@ extension RealLocationManagerDelegate: LocationManagerDelegate {
             }.eraseToAnyPublisher()
     }
     
-    public var enterRegionStream: AnyPublisher<SystemRegion, Never> {
+    public func getEnterRegionStream<T>() -> AnyPublisher<T, Never> where T: SystemRegion, T.Constraint: SystemBeaconIdentityConstraint {
+        enterRegionSubject
+            .map {
+                if let beaconRegion = $0 as? CLBeaconRegion {
+                    return .init(
+                        identifier: beaconRegion.identifier,
+                        notifyOnEntry: beaconRegion.notifyOnEntry,
+                        notifyOnExit: beaconRegion.notifyOnExit,
+                        systemBeaconIdentityConstraint: .init(uuid: beaconRegion.uuid)
+                    )
+                } else {
+                    return .init(
+                        identifier: $0.identifier,
+                        notifyOnEntry: $0.notifyOnEntry,
+                        notifyOnExit: $0.notifyOnExit,
+                        systemBeaconIdentityConstraint: nil
+                    )
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    public func getExitRegionStream<T>() -> AnyPublisher<T, Never> where T: SystemRegion, T.Constraint: SystemBeaconIdentityConstraint {
         enterRegionSubject
             .map { CLRegionToSystemRegionMapper().map(from: $0) }
             .eraseToAnyPublisher()
     }
     
-    public var exitRegionStream: AnyPublisher<SystemRegion, Never> {
-        enterRegionSubject
-            .map { CLRegionToSystemRegionMapper().map(from: $0) }
-            .eraseToAnyPublisher()
-    }
-    
-    public var didRangeBeacons: AnyPublisher<[SystemBeacon], Error> {
+    public func didRangeBeacons<T>() -> AnyPublisher<[T], Error> where T: SystemBeacon, T.Constraint: SystemBeaconIdentityConstraint {
         rangeBeaconsSubject
-            .map { $0.map { CLBeaconToSystemBeaconMapper().map(from: $0) } }
+            .map {
+                $0.compactMap {
+                    .init(
+                        uuid: $0.uuid,
+                        major: $0.minor,
+                        minor: $0.minor,
+                        proximity: .init(rawValue: $0.proximity.rawValue) ?? .unknown,
+                        accuracy: $0.accuracy,
+                        rssi: $0.rssi,
+                        beaconIdentityConstraint: T.Constraint(
+                            uuid: $0.uuid
+                        )
+                    )
+                }
+            }
             .eraseToAnyPublisher()
     }
     
-    public var didDetermineStateForRegion: AnyPublisher<(SystemRegionState, SystemRegion), Never> {
+    // swiftlint: disable line_length
+    public func didDetermineStateForRegion<T>() -> AnyPublisher<(SystemRegionState, T), Never> where T: SystemRegion, T.Constraint: SystemBeaconIdentityConstraint {
         stateForRegionSubject
-            .compactMap { (state: CLRegionState, region: CLRegion) -> (SystemRegionState, SystemRegion)? in
+            .compactMap { (state: CLRegionState, region: CLRegion) -> (SystemRegionState, T)? in
                 guard let stateRegion = SystemRegionState(rawValue: state.rawValue) else { return nil }
-                return (stateRegion, CLRegionToSystemRegionMapper().map(from: region))
+                if let beaconRegion = region as? CLBeaconRegion {
+                    return (
+                        stateRegion,
+                        T(
+                            identifier: beaconRegion.identifier,
+                            notifyOnEntry: beaconRegion.notifyOnEntry,
+                            notifyOnExit: beaconRegion.notifyOnExit,
+                            systemBeaconIdentityConstraint: T.Constraint(uuid: beaconRegion.uuid)
+                        )
+                    )
+                } else {
+                    return (
+                        stateRegion,
+                        .init(
+                            identifier: region.identifier,
+                            notifyOnEntry: region.notifyOnEntry,
+                            notifyOnExit: region.notifyOnExit,
+                            systemBeaconIdentityConstraint: nil
+                        )
+                    )
+                }
             }.eraseToAnyPublisher()
     }
+    // swiftlint: enable line_length
     
     public var didChangeAuthorization: AnyPublisher<SystemLocationAuthorizationStatus, Never> {
         didChangeAuthorizationSubject.eraseToAnyPublisher()

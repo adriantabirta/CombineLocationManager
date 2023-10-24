@@ -2,7 +2,7 @@
 //  SystemStartRangingBeaconsUseCase.swift
 //
 //
-//  Created by at-plan-net on 03.02.2023.
+//  Created by at on 03.02.2023.
 //
 
 protocol SystemStartRangingBeaconsUseCase {
@@ -23,7 +23,7 @@ public struct RealSystemStartRangingBeaconsUseCase {
     }
 }
 
-// MARK: - SystemStartRangingBeaconsUseCase
+// MARK: - SystemStartRangingBeaconsUseCase implementation
 
 extension RealSystemStartRangingBeaconsUseCase: SystemStartRangingBeaconsUseCase {
     

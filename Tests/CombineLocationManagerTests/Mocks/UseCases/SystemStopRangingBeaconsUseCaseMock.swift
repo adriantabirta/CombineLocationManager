@@ -2,7 +2,7 @@
 //  SystemStopRangingBeaconsUseCaseMock.swift
 //
 //
-//  Created by at-plan-net on 10.03.2023.
+//  Created by at on 10.03.2023.
 //
 
 @testable import CombineLocationManager

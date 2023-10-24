@@ -2,7 +2,7 @@
 //  RealGetLocationsStreamUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 27.02.2023.
+//  Created by at on 27.02.2023.
 //
 
 import XCTest
@@ -49,11 +49,11 @@ extension RealGetLocationsStreamUseCaseTests {
     func testExecuteOk() {
         let expectation = expectation(description: "RealGetLocationsStreamUseCaseTests::testExecuteOk")
         
-        let expectedResult = [SystemLocation(coordinate: .init(latitude: 1.0, longitude: 2.0), direction: 1, timestamp: Date())]
+        let expectedResult = [SystemLocationStub(coordinate: .init(latitude: 1.0, longitude: 2.0), horizontalAccuracy: 1, direction: 1, timestamp: Date())]
         
-        locationManagerDelegate.stubbedLocationsStream = Just(expectedResult).setFailureType(to: Error.self).eraseToAnyPublisher()
-        
-        tested.execute()
+        locationManagerDelegate.stubbedGetLocationsStreamResult = Just(expectedResult).setFailureType(to: Error.self).eraseToAnyPublisher()
+
+        (tested.execute() as AnyPublisher<[SystemLocationStub], Error>)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure = completion {
@@ -61,7 +61,7 @@ extension RealGetLocationsStreamUseCaseTests {
                     }
                 }, receiveValue: { result in
                     XCTAssertEqual(result, expectedResult, "Should be not nil")
-                    XCTAssertEqual(self.locationManagerDelegate.invokedLocationsStreamGetterCount, 1, "Should be not nil")
+                    XCTAssertEqual(self.locationManagerDelegate.invokedGetLocationsStreamCount, 1, "Should be not nil")
                     expectation.fulfill()
                 }
             )

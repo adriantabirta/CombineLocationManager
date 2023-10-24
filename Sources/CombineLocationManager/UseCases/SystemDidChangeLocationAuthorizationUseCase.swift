@@ -25,7 +25,7 @@ public struct RealSystemDidChangeLocationAuthorizationUseCase {
     }
 }
 
-// MARK: - SystemDidChangeLocationAuthorizationUseCase
+// MARK: - SystemDidChangeLocationAuthorizationUseCase implementation
 
 extension RealSystemDidChangeLocationAuthorizationUseCase: SystemDidChangeLocationAuthorizationUseCase {
     

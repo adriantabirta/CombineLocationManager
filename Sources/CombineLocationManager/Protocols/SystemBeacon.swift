@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol SystemBeacon: Equatable, Hashable, CustomStringConvertible {
+public protocol SystemBeacon {
     
     associatedtype Constraint
     

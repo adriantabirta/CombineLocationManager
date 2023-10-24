@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol SystemLocation: Equatable {
+public protocol SystemLocation {
     
     associatedtype Coordinate
     

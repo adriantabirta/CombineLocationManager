@@ -8,6 +8,18 @@
 public enum SystemAccuracyAuthorization: Int {
     
     case fullAccuracy = 0
-
+    
     case reducedAccuracy = 1
+}
+
+// MARK: - CustomStringConvertible
+
+extension SystemAccuracyAuthorization: CustomStringConvertible {
+    
+    public var description: String {
+        switch self {
+        case .fullAccuracy: return "fullAccuracy"
+        case .reducedAccuracy: return "reducedAccuracy"
+        }
+    }
 }

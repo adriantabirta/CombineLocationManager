@@ -2,7 +2,7 @@
 //  SystemDidRangeBeaconsStreamUseCase.swift
 //
 //
-//  Created by at-plan-net on 03.02.2023.
+//  Created by at on 03.02.2023.
 //
 
 import Combine
@@ -10,7 +10,7 @@ import CoreLocation
 
 public protocol SystemDidRangeBeaconsStreamUseCase {
     
-    func execute() -> AnyPublisher<[SystemBeacon], Error>
+    func execute<T: SystemBeacon>() -> AnyPublisher<[T], Error> where T.Constraint: SystemBeaconIdentityConstraint
 }
 
 public struct RealSystemDidRangeBeaconsStreamUseCase {
@@ -26,11 +26,11 @@ public struct RealSystemDidRangeBeaconsStreamUseCase {
     }
 }
 
-// MARK: - SystemDidRangeBeaconsStreamUseCase
+// MARK: - SystemDidRangeBeaconsStreamUseCase implementation
 
 extension RealSystemDidRangeBeaconsStreamUseCase: SystemDidRangeBeaconsStreamUseCase {
     
-    public func execute() -> AnyPublisher<[SystemBeacon], Error> {
-        locationManagerDelegate.didRangeBeacons
+    public func execute<T>() -> AnyPublisher<[T], Error> where T: SystemBeacon, T.Constraint: SystemBeaconIdentityConstraint {
+        locationManagerDelegate.didRangeBeacons()
     }
 }

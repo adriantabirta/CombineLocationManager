@@ -2,18 +2,26 @@
 //  SystemBeaconIdentityConstraintStub.swift
 //
 //
-//  Created by at-plan-net on 02.03.2023.
+//  Created by at on 02.03.2023.
 //
 
 import Foundation
 @testable import CombineLocationManager
 
-// swiftlint: disable force_unwrapping
-extension SystemBeaconIdentityConstraint: Stubbable {
+struct SystemBeaconIdentityConstraintStub: SystemBeaconIdentityConstraint, Equatable, Hashable {
     
-    static func stub() -> SystemBeaconIdentityConstraint {
-        .init(
-            uuid: UUID(uuidString: "308b7f82-a701-11ed-afa1-0242ac120002")!
-        )
+    var uuid: UUID
+    
+    init(uuid: UUID) {
+        self.uuid = uuid
     }
 }
+
+// swiftlint: disable force_unwrapping
+extension SystemBeaconIdentityConstraintStub: Stubbable {
+    
+    static func stub() -> SystemBeaconIdentityConstraintStub {
+        .init(uuid: .init(uuidString: "308b7f82-a701-11ed-afa1-0242ac120002")!)
+    }
+}
+// swiftlint: enable force_unwrapping

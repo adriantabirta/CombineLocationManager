@@ -2,7 +2,7 @@
 //  SystemGetLocationsStreamUseCase.swift
 //
 //
-//  Created by at-plan-net on 27.02.2023.
+//  Created by at on 27.02.2023.
 //
 
 import Combine
@@ -10,7 +10,7 @@ import CoreLocation
 
 public protocol SystemGetLocationsStreamUseCase {
     
-    func execute() -> AnyPublisher<[SystemLocation], Error>
+    func execute<T: SystemLocation>() -> AnyPublisher<[T], Error> where T.Coordinate: SystemCoordinate
 }
 
 public struct RealSystemGetLocationsStreamUseCase {
@@ -26,11 +26,11 @@ public struct RealSystemGetLocationsStreamUseCase {
     }
 }
 
-// MARK: - SystemStopMonitoringRegionUseCase
+// MARK: - SystemStopMonitoringRegionUseCase implementation
 
 extension RealSystemGetLocationsStreamUseCase: SystemGetLocationsStreamUseCase {
     
-    public func execute() -> AnyPublisher<[SystemLocation], Error> {
-        locationManagerDelegate.locationsStream
+    public func execute<T>() -> AnyPublisher<[T], Error> where T: SystemLocation, T.Coordinate: SystemCoordinate {
+        locationManagerDelegate.getLocationsStream()
     }
 }

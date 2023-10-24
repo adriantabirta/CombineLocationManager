@@ -2,7 +2,7 @@
 //  RealSystemStartRangingBeaconsUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 02.03.2023.
+//  Created by at on 02.03.2023.
 //
 
 import XCTest
@@ -48,7 +48,7 @@ extension RealSystemStartRangingBeaconsUseCaseTests {
     
     func testExecuteOk() {
         
-        tested.execute(SystemBeaconIdentityConstraint.stub())
+        tested.execute(SystemBeaconIdentityConstraintStub.stub())
         
         XCTAssertEqual(self.locationManager.invokedStartRangingBeaconsCount, 1, "Should be equal")
     }

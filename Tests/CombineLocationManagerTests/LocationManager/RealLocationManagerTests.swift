@@ -2,7 +2,7 @@
 //  RealLocationManagerTests.swift
 //  
 //
-//  Created by at-plan-net on 25.07.2023.
+//  Created by at on 25.07.2023.
 //
 
 import XCTest
@@ -54,11 +54,11 @@ extension RealLocationManagerTests {
     func testLocationsStreamOk() {
         let expectation = expectation(description: "RealLocationManagerTests::testLocationsStreamOk")
         
-        let expectedResult = [SystemLocation.stub()]
+        let expectedResult = [SystemLocationStub.stub()]
         
-        locationManagerDelegate.stubbedLocationsStream = Just(expectedResult).setFailureType(to: Error.self).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedGetLocationsStreamResult = Just(expectedResult).setFailureType(to: Error.self).eraseToAnyPublisher()
         
-        tested.locationsStream
+       (tested.getLocationsStream() as AnyPublisher<[SystemLocationStub], Error>)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure = completion {
@@ -66,7 +66,7 @@ extension RealLocationManagerTests {
                     }
                 }, receiveValue: { result in
                     XCTAssertEqual(result, expectedResult, "Should be equal")
-                    XCTAssertEqual(self.locationManagerDelegate.invokedLocationsStreamGetterCount, 1, "Should be not nil")
+                    XCTAssertEqual(self.locationManagerDelegate.invokedGetLocationsStreamCount, 1, "Should be not nil")
                     expectation.fulfill()
                 })
             .store(in: &cancellables)
@@ -77,14 +77,14 @@ extension RealLocationManagerTests {
     func testEnterRegionStreamOk() {
         let expectation = expectation(description: "RealLocationManagerTests::testEnterRegionStreamOk")
         
-        let expectedResult = SystemRegion.stub()
+        let expectedResult = SystemRegionStub.stub()
         
-        locationManagerDelegate.stubbedEnterRegionStream = Just(expectedResult).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedGetEnterRegionStreamResult = Just(expectedResult).eraseToAnyPublisher()
         
-        tested.enterRegionStream
+        (tested.enterRegionStream() as AnyPublisher<SystemRegionStub, Never>)
             .sink(receiveValue: { result in
                 XCTAssertEqual(result, expectedResult, "Should be equal")
-                XCTAssertEqual(self.locationManagerDelegate.invokedEnterRegionStreamGetterCount, 1, "Should be not nil")
+                XCTAssertEqual(self.locationManagerDelegate.invokedGetEnterRegionStreamCount, 1, "Should be not nil")
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -95,14 +95,14 @@ extension RealLocationManagerTests {
     func testExitRegionStreamOk() {
         let expectation = expectation(description: "RealLocationManagerTests::testExitRegionStreamOk")
         
-        let expectedResult = SystemRegion.stub()
+        let expectedResult = SystemRegionStub.stub()
         
-        locationManagerDelegate.stubbedExitRegionStream = Just(expectedResult).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedGetEnterRegionStreamResult = Just(expectedResult).eraseToAnyPublisher()
         
-        tested.exitRegionStream
+        (tested.enterRegionStream() as AnyPublisher<SystemRegionStub, Never>)
             .sink(receiveValue: { result in
                 XCTAssertEqual(result, expectedResult, "Should be equal")
-                XCTAssertEqual(self.locationManagerDelegate.invokedExitRegionStreamGetterCount, 1, "Should be not nil")
+                XCTAssertEqual(self.locationManagerDelegate.invokedGetEnterRegionStreamCount, 1, "Should be not nil")
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -113,11 +113,11 @@ extension RealLocationManagerTests {
     func testDidRangeBeaconsOk() {
         let expectation = expectation(description: "RealLocationManagerTests::testDidRangeBeaconsOk")
         
-        let expectedResult = [SystemBeacon.stub()]
+        let expectedResult = [SystemBeaconStub.stub()]
         
-        locationManagerDelegate.stubbedDidRangeBeacons = Just(expectedResult).setFailureType(to: Error.self).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedDidRangeBeaconsResult = Just(expectedResult).setFailureType(to: Error.self).eraseToAnyPublisher()
         
-        tested.didRangeBeacons
+        (tested.didRangeBeacons() as AnyPublisher<[SystemBeaconStub], Error>)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure = completion {
@@ -125,7 +125,7 @@ extension RealLocationManagerTests {
                     }
                 }, receiveValue: { result in
                     XCTAssertEqual(result, expectedResult, "Should be equal")
-                    XCTAssertEqual(self.locationManagerDelegate.invokedDidRangeBeaconsGetterCount, 1, "Should be not nil")
+                    XCTAssertEqual(self.locationManagerDelegate.invokedDidRangeBeaconsCount, 1, "Should be not nil")
                     expectation.fulfill()
                 }
             )
@@ -137,15 +137,15 @@ extension RealLocationManagerTests {
     func testdidDetermineStateForRegionOk() {
         let expectation = expectation(description: "RealLocationManagerTests::testDidRangeBeaconsOk")
         
-        let expectedResult = (SystemRegionState.inside, SystemRegion.stub())
+        let expectedResult = (SystemRegionState.inside, SystemRegionStub.stub())
         
-        locationManagerDelegate.stubbedDidDetermineStateForRegion = Just(expectedResult).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedDidDetermineStateForRegionResult = Just(expectedResult).eraseToAnyPublisher()
         
-        tested.didDetermineStateForRegion
+        (tested.didDetermineStateForRegion() as AnyPublisher<(SystemRegionState, SystemRegionStub), Never>)
             .sink(receiveValue: { result in
                 XCTAssertEqual(result.0, expectedResult.0, "Should be equal")
                 XCTAssertEqual(result.1, expectedResult.1, "Should be equal")
-                XCTAssertEqual(self.locationManagerDelegate.invokedDidDetermineStateForRegionGetterCount, 1, "Should be not nil")
+                XCTAssertEqual(self.locationManagerDelegate.invokedDidDetermineStateForRegionCount, 1, "Should be not nil")
                 expectation.fulfill()
             })
             .store(in: &cancellables)

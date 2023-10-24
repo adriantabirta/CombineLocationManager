@@ -2,7 +2,7 @@
 //  RealSystemDidRangeBeaconsStreamUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 02.03.2023.
+//  Created by at on 02.03.2023.
 //
 
 import XCTest
@@ -49,9 +49,9 @@ extension RealSystemDidRangeBeaconsStreamUseCaseTests {
     func testExecuteOk() {
         let expectation = expectation(description: "RealSystemDidRangeBeaconsStreamUseCaseTests::testExecuteOk")
         
-        let expectedResult = [SystemBeacon.stub()]
+        let expectedResult = [SystemBeaconStub.stub()]
         
-        locationManagerDelegate.stubbedDidRangeBeacons = Just(expectedResult).setFailureType(to: Error.self).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedDidRangeBeaconsResult = Just(expectedResult).setFailureType(to: Error.self).eraseToAnyPublisher()
         
         tested.execute()
             .sink(
@@ -70,9 +70,9 @@ extension RealSystemDidRangeBeaconsStreamUseCaseTests {
     func testExecuteFail() {
         let expectation = expectation(description: "RealSystemDidRangeBeaconsStreamUseCaseTests::testExecuteOk")
         
-        locationManagerDelegate.stubbedDidRangeBeacons = Fail(error: NSError.init(domain: "Error", code: -1)).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedDidRangeBeaconsResult = Fail(error: NSError.init(domain: "Error", code: -1)).eraseToAnyPublisher()
         
-        tested.execute()
+        (tested.execute() as AnyPublisher<[SystemBeaconStub], Error> )
             .sink(
                 receiveCompletion: { completion in
                     if case .failure = completion {

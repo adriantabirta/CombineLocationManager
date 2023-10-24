@@ -5,7 +5,7 @@
 //  Created by Adrian Tabirta on 21.09.2023.
 //
 
-public protocol SystemRegion: Hashable {
+public protocol SystemRegion {
     
     associatedtype Constraint
     

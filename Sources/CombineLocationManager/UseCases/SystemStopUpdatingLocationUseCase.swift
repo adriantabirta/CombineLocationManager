@@ -23,7 +23,7 @@ public struct RealSystemStopUpdatingLocationUseCase {
     }
 }
 
-// MARK: - SystemStopUpdatingLocationUseCase
+// MARK: - SystemStopUpdatingLocationUseCase implementation
 
 extension RealSystemStopUpdatingLocationUseCase: SystemStopUpdatingLocationUseCase {
     

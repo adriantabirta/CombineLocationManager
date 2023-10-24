@@ -9,7 +9,7 @@ import Combine
 
 public protocol SystemDidDetermineStateForRegionUseCase {
     
-    func execute() -> AnyPublisher<(SystemRegionState, SystemRegion), Never>
+    func execute<T: SystemRegion>() -> AnyPublisher<(SystemRegionState, T), Never> where T.Constraint: SystemBeaconIdentityConstraint
 }
 
 public struct RealSystemDidDetermineStateForRegionUseCase {
@@ -25,11 +25,11 @@ public struct RealSystemDidDetermineStateForRegionUseCase {
     }
 }
 
-// MARK: - SystemDidDetermineStateForRegionUseCase
+// MARK: - SystemDidDetermineStateForRegionUseCase implementation
 
 extension RealSystemDidDetermineStateForRegionUseCase: SystemDidDetermineStateForRegionUseCase {
     
-    public func execute() -> AnyPublisher<(SystemRegionState, SystemRegion), Never> {
-        locationManagerDelegate.didDetermineStateForRegion
+    public func execute<T>() -> AnyPublisher<(SystemRegionState, T), Never> where T: SystemRegion, T.Constraint: SystemBeaconIdentityConstraint {
+        locationManagerDelegate.didDetermineStateForRegion()
     }
 }

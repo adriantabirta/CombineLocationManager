@@ -11,9 +11,9 @@ public protocol SystemLocationManager {
     
     // MARK: - Properties
     
-    var lastLocation: SystemLocation? { get }
-    
-    var currentMonitoredRegions: Set<SystemRegion> { get }
+    func getLastLocation<T: SystemLocation>() -> T? where T.Coordinate: SystemCoordinate
+        
+    func getCurrentMonitoredRegions<T: SystemRegion>() -> [T]
     
     var currentAuthorizationStatus: SystemLocationAuthorizationStatus { get }
     
@@ -45,9 +45,9 @@ public protocol SystemLocationManager {
     
     func dismissHeadingCalibrationDisplay()
     
-    func startMonitoring(for region: RegionProtocol)
+    func startMonitoring<T: SystemGenericRegion>(for region: T)
     
-    func stopMonitoring(for region: RegionProtocol)
+    func stopMonitoring<T: SystemGenericRegion>(for region: T)
     
     func startRangingBeacons(satisfying constraint: SystemBeaconIdentityConstraint)
     
@@ -55,17 +55,17 @@ public protocol SystemLocationManager {
     
     // MARK: - Delegate Streams
     
-    var locationsStream: AnyPublisher<[SystemLocation], Error> { get }
-        
-    var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> { get }
+    func getLocationsStream<T: SystemLocation>() -> AnyPublisher<[T], Error> where T.Coordinate: SystemCoordinate
     
-    var enterRegionStream: AnyPublisher<SystemRegion, Never> { get }
+    func didUpdateHeadingStream<T: SystemHeading>() -> AnyPublisher<T, Never>
     
-    var exitRegionStream: AnyPublisher<SystemRegion, Never> { get }
+    func enterRegionStream<T: SystemRegion>() -> AnyPublisher<T, Never> where T.Constraint: SystemBeaconIdentityConstraint
     
-    var didRangeBeacons: AnyPublisher<[SystemBeacon], Error> { get }
+    func exitRegionStream<T: SystemRegion>() -> AnyPublisher<T, Never> where T.Constraint: SystemBeaconIdentityConstraint
     
-    var didDetermineStateForRegion: AnyPublisher<(SystemRegionState, SystemRegion), Never> { get }
+    func didRangeBeacons<T: SystemBeacon>() -> AnyPublisher<[T], Error> where T.Constraint: SystemBeaconIdentityConstraint
+    
+    func didDetermineStateForRegion<T: SystemRegion>() -> AnyPublisher<(SystemRegionState, T), Never> where T.Constraint: SystemBeaconIdentityConstraint
     
     var didChangeAuthorization: AnyPublisher<SystemLocationAuthorizationStatus, Never> { get }
     

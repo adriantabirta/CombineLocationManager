@@ -2,7 +2,7 @@
 //  SystemBeaconTests.swift
 //
 //
-//  Created by at-plan-net on 03.03.2023.
+//  Created by at on 03.03.2023.
 //
 
 import XCTest
@@ -12,7 +12,7 @@ final class SystemBeaconTests: XCTestCase {
     
     // MARK: - Properties
     
-    private var tested: SystemBeacon!
+    private var tested: SystemBeaconStub!
     
     // MARK: - setUp and tearDown
     
@@ -36,7 +36,7 @@ extension SystemBeaconTests {
     func testEquitableFunctionFail() {
         guard let uuid = UUID(uuidString: "308b7f82-a701-11ed-afa1-0242ac120003") else { return XCTFail("Cannot create uuid") }
         
-        let beacon = SystemBeacon(
+        let beacon = SystemBeaconStub(
             uuid: uuid,
             major: 1,
             minor: 1,
@@ -46,22 +46,9 @@ extension SystemBeaconTests {
             beaconIdentityConstraint: .init(uuid: uuid)
         )
         
-        XCTAssertFalse(SystemBeacon.stub() == beacon, "Should be equal")
+        XCTAssertFalse(SystemBeaconStub.stub() == beacon, "Should be equal")
     }
-    
-    func testHashFunctionOk() {
         
-        let expectedResult = 7_872_959_211_916_669_501
-        
-        var hasher = Hasher()
-        
-        tested.hash(into: &hasher)
-        
-        let result = hasher.finalize()
-        
-        XCTAssertEqual(result, expectedResult, "Should be equal")
-    }
-    
     func testDescriptionOk() {
         let expectedResult = "BeaconDataModel(uuid: 308B7F82-A701-11ED-AFA1-0242AC120002, major: 1, minor: 1, proximity: near, accuracy: 0.5, rssi:50)"
         

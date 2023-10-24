@@ -2,19 +2,41 @@
 //  SystemRegionStub.swift
 //
 //
-//  Created by at-plan-net on 01.03.2023.
+//  Created by at on 01.03.2023.
 //
 
 @testable import CombineLocationManager
 
-extension SystemRegion: Stubbable {
+struct SystemRegionStub: SystemRegion {
+
+    typealias Constraint = SystemBeaconIdentityConstraintStub
     
-    static func stub() -> SystemRegion {
+    var identifier: String
+    
+    var notifyOnEntry: Bool
+    
+    var notifyOnExit: Bool
+    
+    var systemBeaconIdentityConstraint: SystemBeaconIdentityConstraintStub?
+    
+    init(identifier: String, notifyOnEntry: Bool, notifyOnExit: Bool, systemBeaconIdentityConstraint: SystemBeaconIdentityConstraintStub?) {
+        self.identifier = identifier
+        self.notifyOnEntry = notifyOnEntry
+        self.notifyOnExit = notifyOnExit
+        self.systemBeaconIdentityConstraint = systemBeaconIdentityConstraint
+    }
+}
+
+extension SystemRegionStub: Equatable {}
+
+extension SystemRegionStub: Stubbable {
+    
+    static func stub() -> SystemRegionStub {
         .init(
             identifier: "id",
             notifyOnEntry: true,
             notifyOnExit: true,
-            systemBeaconIdentityConstraint: SystemBeaconIdentityConstraint.stub()
+            systemBeaconIdentityConstraint: SystemBeaconIdentityConstraintStub.stub()
         )
     }
 }

@@ -2,7 +2,7 @@
 //  RealSystemGetLastLocationUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 02.03.2023.
+//  Created by at on 02.03.2023.
 //
 
 import XCTest
@@ -49,14 +49,14 @@ extension RealSystemGetLastLocationUseCaseTests {
     func testExecuteOk() {
         let expectation = expectation(description: "RealSystemGetLastLocationUseCaseTests::testExecuteOk")
         
-        let expectedResult = SystemLocation.stub()
+        let expectedResult = SystemLocationStub.stub()
         
-        locationManager.stubbedLocationsStream = Just([expectedResult]).setFailureType(to: Error.self).eraseToAnyPublisher()
+        locationManager.stubbedGetLocationsStreamResult = Just([expectedResult]).setFailureType(to: Error.self).eraseToAnyPublisher()
         
         tested.execute()
             .sink(receiveValue: { result in
                 XCTAssertEqual(result, expectedResult, "Should be not nil")
-                XCTAssertEqual(self.locationManager.invokedLocationsStreamGetterCount, 1, "Should be not nil")
+                XCTAssertEqual(self.locationManager.invokedGetLocationsStreamCount, 1, "Should be not nil")
                 expectation.fulfill()
             })
             .store(in: &cancellables)

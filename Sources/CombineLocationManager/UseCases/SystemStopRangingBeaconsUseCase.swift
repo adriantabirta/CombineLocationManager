@@ -2,7 +2,7 @@
 //  StopRangingBeaconsUseCase.swift
 //
 //
-//  Created by at-plan-net on 03.02.2023.
+//  Created by at on 03.02.2023.
 //
 
 public protocol SystemStopRangingBeaconsUseCase {
@@ -23,7 +23,7 @@ public struct RealSystemStopRangingBeaconsUseCase {
     }
 }
 
-// MARK: - SystemStopRangingBeaconsUseCase
+// MARK: - SystemStopRangingBeaconsUseCase implementation
 
 extension RealSystemStopRangingBeaconsUseCase: SystemStopRangingBeaconsUseCase {
     

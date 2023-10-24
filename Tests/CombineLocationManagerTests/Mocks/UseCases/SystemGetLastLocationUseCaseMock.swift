@@ -2,7 +2,7 @@
 //  SystemGetLastLocationUseCaseMock.swift
 //
 //
-//  Created by at-plan-net on 01.03.2023.
+//  Created by at on 01.03.2023.
 //
 
 import Combine
@@ -12,11 +12,11 @@ class SystemGetLastLocationUseCaseMock: SystemGetLastLocationUseCase {
 
     var invokedExecute = false
     var invokedExecuteCount = 0
-    var stubbedExecuteResult: AnyPublisher<SystemLocation?, Never>!
+    var stubbedExecuteResult: AnyPublisher<Any?, Never>!
 
-    func execute() -> AnyPublisher<SystemLocation?, Never> {
+    func execute<T: SystemLocation>() -> AnyPublisher<T?, Never> where T.Coordinate: SystemCoordinate {
         invokedExecute = true
         invokedExecuteCount += 1
-        return stubbedExecuteResult
+        return stubbedExecuteResult.compactMap { $0 as? T }.eraseToAnyPublisher()
     }
 }

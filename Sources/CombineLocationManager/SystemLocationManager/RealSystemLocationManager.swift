@@ -23,34 +23,33 @@ public class RealSystemLocationManager: CLLocationManager {
     }
 }
 
-// MARK: - LocationManager
+// MARK: - SystemLocationManager implementation
 
 extension RealSystemLocationManager: SystemLocationManager {
     
-    public var lastLocation: SystemLocation? {
+    public func getLastLocation<T>() -> T? where T: SystemLocation, T.Coordinate: SystemCoordinate {
         guard let location = self.location else { return nil }
-        return SystemLocation(
-            coordinate: .init(
+        return T(
+            coordinate: T.Coordinate(
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude
             ),
+            horizontalAccuracy: location.horizontalAccuracy,
             direction: location.course,
             timestamp: location.timestamp
         )
     }
     
-    public var currentMonitoredRegions: Set<SystemRegion> {
-        Set(
-            monitoredRegions
-                .map {
-                    SystemRegion(
-                        identifier: $0.identifier,
-                        notifyOnEntry: $0.notifyOnExit,
-                        notifyOnExit: $0.notifyOnExit,
-                        systemBeaconIdentityConstraint: nil
-                    )
-                }
-        )
+    public func getCurrentMonitoredRegions<T>() -> [T] where T: SystemRegion {
+        monitoredRegions
+            .map {
+                .init(
+                    identifier: $0.identifier,
+                    notifyOnEntry: $0.notifyOnExit,
+                    notifyOnExit: $0.notifyOnExit,
+                    systemBeaconIdentityConstraint: nil
+                )
+            }
     }
     
     @available(iOS 14.0, *)
@@ -75,25 +74,51 @@ extension RealSystemLocationManager: SystemLocationManager {
         DeviceOrientation(rawValue: super.headingOrientation.rawValue) ?? .portrait
     }
     
-    public func startMonitoring(for region: RegionProtocol) {
-        
+    public func startMonitoring<T>(for region: T) where T: SystemGenericRegion {
         if let circularRegion = region as? SystemCircularRegion {
-            super.startMonitoring(for: SystemCircularRegionToCLCircularRegionMapper().map(from: circularRegion))
+            super.startMonitoring(
+                for: CLCircularRegion(
+                    center: .init(
+                        latitude: circularRegion.coordinate.latitude,
+                        longitude: circularRegion.coordinate.longitude
+                    ),
+                    radius: circularRegion.radius,
+                    identifier: circularRegion.identifier
+                )
+            )
         }
         
-        if let beaconRegion = region as? SystemBeaconRegion {
-            super.startMonitoring(for: CLBeaconRegion(uuid: beaconRegion.beaconIdentityConstraintDataModel.uuid, identifier: beaconRegion.identifier))
+        if let beaconRegion = region as? any SystemBeaconRegion {
+            super.startMonitoring(
+                for: CLBeaconRegion(
+                    uuid: beaconRegion.beaconIdentityConstraintDataModel.uuid,
+                    identifier: beaconRegion.identifier
+                )
+            )
         }
     }
     
-    public func stopMonitoring(for region: RegionProtocol) {
-        
+    public func stopMonitoring<T>(for region: T) where T: SystemGenericRegion {
         if let circularRegion = region as? SystemCircularRegion {
-            super.stopMonitoring(for: SystemCircularRegionToCLCircularRegionMapper().map(from: circularRegion))
+            super.stopMonitoring(
+                for: CLCircularRegion(
+                    center: .init(
+                        latitude: circularRegion.coordinate.latitude,
+                        longitude: circularRegion.coordinate.longitude
+                    ),
+                    radius: circularRegion.radius,
+                    identifier: circularRegion.identifier
+                )
+            )
         }
         
-        if let beaconRegion = region as? SystemBeaconRegion {
-            super.stopMonitoring(for: CLBeaconRegion(uuid: beaconRegion.beaconIdentityConstraintDataModel.uuid, identifier: beaconRegion.identifier))
+        if let beaconRegion = region as? (any SystemBeaconRegion) {
+            super.stopMonitoring(
+                for: CLBeaconRegion(
+                    uuid: beaconRegion.beaconIdentityConstraintDataModel.uuid,
+                    identifier: beaconRegion.identifier
+                )
+            )
         }
     }
     
@@ -105,29 +130,31 @@ extension RealSystemLocationManager: SystemLocationManager {
         super.stopRangingBeacons(satisfying: CLBeaconIdentityConstraint(uuid: constraint.uuid))
     }
     
-    public var locationsStream: AnyPublisher<[SystemLocation], Error> {
-        locationManagerDelegate.locationsStream
+    public func getLocationsStream<T>() -> AnyPublisher<[T], Error> where T: SystemLocation, T.Coordinate: SystemCoordinate {
+        locationManagerDelegate.getLocationsStream()
     }
     
-    public var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> {
-        locationManagerDelegate.didUpdateHeadingStream
+    public func didUpdateHeadingStream<T>() -> AnyPublisher<T, Never> where T: SystemHeading {
+        locationManagerDelegate.didUpdateHeadingStream()
     }
     
-    public var enterRegionStream: AnyPublisher<SystemRegion, Never> {
-        locationManagerDelegate.enterRegionStream
+    public func enterRegionStream<T>() -> AnyPublisher<T, Never> where T: SystemRegion, T.Constraint: SystemBeaconIdentityConstraint {
+        locationManagerDelegate.getEnterRegionStream()
     }
     
-    public var exitRegionStream: AnyPublisher<SystemRegion, Never> {
-        locationManagerDelegate.exitRegionStream
+    public func exitRegionStream<T>() -> AnyPublisher<T, Never> where T: SystemRegion, T.Constraint: SystemBeaconIdentityConstraint {
+        locationManagerDelegate.getExitRegionStream()
     }
     
-    public var didRangeBeacons: AnyPublisher<[SystemBeacon], Error> {
-        locationManagerDelegate.didRangeBeacons
+    public func didRangeBeacons<T>() -> AnyPublisher<[T], Error> where T: SystemBeacon, T.Constraint: SystemBeaconIdentityConstraint {
+        locationManagerDelegate.didRangeBeacons()
     }
     
-    public var didDetermineStateForRegion: AnyPublisher<(SystemRegionState, SystemRegion), Never> {
-        locationManagerDelegate.didDetermineStateForRegion
+    // swiftlint: disable line_length
+    public func didDetermineStateForRegion<T>() -> AnyPublisher<(SystemRegionState, T), Never> where T: SystemRegion, T.Constraint: SystemBeaconIdentityConstraint {
+        locationManagerDelegate.didDetermineStateForRegion()
     }
+    // swiftlint: enable line_length
     
     public var didChangeAuthorization: AnyPublisher<SystemLocationAuthorizationStatus, Never> {
         locationManagerDelegate.didChangeAuthorization

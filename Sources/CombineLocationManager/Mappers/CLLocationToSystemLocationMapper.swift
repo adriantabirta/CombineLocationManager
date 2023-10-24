@@ -9,13 +9,14 @@ import CoreLocation
 
 struct CLLocationToSystemLocationMapper {
     
-    func map(model: [CLLocation]) -> [SystemLocation] {
+    func map<T: SystemLocation>(model: [CLLocation]) -> [T] where T.Coordinate: SystemCoordinate {
         model.map {
-            SystemLocation(
-                coordinate: SystemCoordinate(
+            T(
+                coordinate: .init(
                     latitude: $0.coordinate.latitude,
                     longitude: $0.coordinate.longitude
                 ),
+                horizontalAccuracy: $0.horizontalAccuracy,
                 direction: $0.course,
                 timestamp: $0.timestamp
             )

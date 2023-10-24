@@ -2,7 +2,7 @@
 //  SystemDidDetermineStateForRegionUseCaseMock.swift
 //
 //
-//  Created by at-plan-net on 10.03.2023.
+//  Created by at on 10.03.2023.
 //
 
 import Combine
@@ -12,11 +12,11 @@ class SystemDidDetermineStateForRegionUseCaseMock: SystemDidDetermineStateForReg
 
     var invokedExecute = false
     var invokedExecuteCount = 0
-    var stubbedExecuteResult: AnyPublisher<(SystemRegionState, SystemRegion), Never>!
+    var stubbedExecuteResult: AnyPublisher<(SystemRegionState, Any), Never>!
 
-    func execute() -> AnyPublisher<(SystemRegionState, SystemRegion), Never> {
+    func execute<T: SystemRegion>() -> AnyPublisher<(SystemRegionState, T), Never> where T.Constraint: SystemBeaconIdentityConstraint {
         invokedExecute = true
         invokedExecuteCount += 1
-        return stubbedExecuteResult
+        return stubbedExecuteResult.compactMap { $0 as? (SystemRegionState, T) }.eraseToAnyPublisher()
     }
 }

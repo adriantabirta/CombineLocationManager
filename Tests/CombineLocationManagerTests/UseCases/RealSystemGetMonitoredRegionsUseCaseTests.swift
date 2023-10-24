@@ -2,7 +2,7 @@
 //  RealSystemGetMonitoredRegionsUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 01.03.2023.
+//  Created by at on 01.03.2023.
 //
 
 import XCTest
@@ -48,11 +48,11 @@ extension RealSystemGetMonitoredRegionsUseCaseTests {
     
     func testExecuteOk() {
         
-        let expectedResult = Set([SystemRegion.stub()])
+        let expectedResult = [SystemRegionStub.stub()]
         
-        locationManager.stubbedCurrentMonitoredRegions = Set(expectedResult)
+        locationManager.stubbedGetCurrentMonitoredRegionsResult = expectedResult
         
-        let result = tested.execute()
+        let result: [SystemRegionStub] = tested.execute()
         
         XCTAssertEqual(result, expectedResult, "Should be not nil")
     }

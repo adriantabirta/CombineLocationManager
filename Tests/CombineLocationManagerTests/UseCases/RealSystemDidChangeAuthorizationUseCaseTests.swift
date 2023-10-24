@@ -2,7 +2,7 @@
 //  RealSystemDidChangeAuthorizationUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 28.04.2023.
+//  Created by at on 28.04.2023.
 //
 
 import XCTest

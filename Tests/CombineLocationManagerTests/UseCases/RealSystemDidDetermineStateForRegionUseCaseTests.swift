@@ -2,7 +2,7 @@
 //  RealSystemDidDetermineStateForRegionUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 02.03.2023.
+//  Created by at on 02.03.2023.
 //
 
 import XCTest
@@ -50,9 +50,9 @@ extension RealSystemDidDetermineStateForRegionUseCaseTests {
     func testExecuteOk() {
         let expectation = expectation(description: "RealSystemDidDetermineStateForRegionUseCaseTests::testExecuteOk")
         
-        let expectedResult = (SystemRegionState.inside, SystemRegion.stub())
+        let expectedResult = (SystemRegionState.inside, SystemRegionStub.stub())
         
-        locationManagerDelegate.stubbedDidDetermineStateForRegion = Just(expectedResult).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedDidDetermineStateForRegionResult = Just(expectedResult).eraseToAnyPublisher()
         
         tested.execute()
             .sink { (systemRegionState, systemRegion) in

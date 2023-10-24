@@ -2,7 +2,7 @@
 //  Stubbable.swift
 //  
 //
-//  Created by at-plan-net on 24.07.2023.
+//  Created by at on 24.07.2023.
 //
 
 protocol Stubbable {

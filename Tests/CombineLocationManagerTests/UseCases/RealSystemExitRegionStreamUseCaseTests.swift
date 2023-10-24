@@ -2,7 +2,7 @@
 //  RealSystemExitRegionStreamUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 01.03.2023.
+//  Created by at on 01.03.2023.
 //
 
 import XCTest
@@ -49,14 +49,14 @@ extension RealSystemExitRegionStreamUseCaseTests {
     func testExecuteOk() {
         let expectation = expectation(description: "RealSystemExitRegionStreamUseCaseTests::testExecuteOk")
         
-        let expectedResult = SystemRegion.stub()
+        let expectedResult = SystemRegionStub.stub()
         
-        locationManagerDelegate.stubbedExitRegionStream = Just(expectedResult).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedGetExitRegionStreamResult = Just(expectedResult).eraseToAnyPublisher()
         
-        tested.execute()
+        (tested.execute() as AnyPublisher<SystemRegionStub, Never>)
             .sink(receiveValue: { result in
                 XCTAssertEqual(result, expectedResult, "Should be not nil")
-                XCTAssertEqual(self.locationManagerDelegate.invokedExitRegionStreamGetterCount, 1, "Should be not nil")
+                XCTAssertEqual(self.locationManagerDelegate.invokedGetExitRegionStreamCount, 1, "Should be not nil")
                 expectation.fulfill()
             })
             .store(in: &cancellables)

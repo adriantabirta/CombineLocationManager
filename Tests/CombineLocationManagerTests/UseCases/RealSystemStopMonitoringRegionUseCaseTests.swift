@@ -2,7 +2,7 @@
 //  RealSystemStopMonitoringRegionUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 01.03.2023.
+//  Created by at on 01.03.2023.
 //
 
 import XCTest
@@ -48,7 +48,7 @@ extension RealSystemStopMonitoringRegionUseCaseTests {
     
     func testExecuteOk() {
         
-        tested.execute(SystemCircularRegion.stub())
+        tested.execute(SystemCircularRegionStub.stub())
         
         XCTAssertEqual(locationManager.invokedStopMonitoringCount, 1, "Should be equal")
     }

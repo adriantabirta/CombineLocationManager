@@ -9,13 +9,13 @@ import CoreLocation
 
 struct CLRegionToSystemRegionMapper {
     
-    func map(from model: CLRegion) -> SystemRegion {
+    func map<T: SystemRegion>(from model: CLRegion) -> T where T.Constraint: SystemBeaconIdentityConstraint {
         if let beaconRegion = model as? CLBeaconRegion {
             return .init(
                 identifier: model.identifier,
                 notifyOnEntry: model.notifyOnEntry,
                 notifyOnExit: model.notifyOnExit,
-                systemBeaconIdentityConstraint: .init(uuid: beaconRegion.uuid)
+                systemBeaconIdentityConstraint: T.Constraint(uuid: beaconRegion.uuid)
             )
         } else {
             return .init(

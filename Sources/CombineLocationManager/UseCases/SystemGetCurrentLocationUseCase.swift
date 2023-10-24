@@ -9,7 +9,7 @@ import Combine
 
 public protocol SystemGetCurrentLocationUseCase {
     
-    func execute() -> AnyPublisher<SystemLocation, Error>
+    func execute<T: SystemLocation>() -> AnyPublisher<T, Error> where T.Coordinate: SystemCoordinate
 }
 
 public struct RealSystemGetCurrentLocationUseCase {
@@ -25,14 +25,14 @@ public struct RealSystemGetCurrentLocationUseCase {
     }
 }
 
-// MARK: - SystemGetCurrentLocationUseCase
+// MARK: - SystemGetCurrentLocationUseCase implementation
 
 extension RealSystemGetCurrentLocationUseCase: SystemGetCurrentLocationUseCase {
     
-    public func execute() -> AnyPublisher<SystemLocation, Error> {
+    public func execute<T>() -> AnyPublisher<T, Error> where T: SystemLocation, T.Coordinate: SystemCoordinate {
         Just(locationManager.requestLocation())
             .setFailureType(to: Error.self)
-            .flatMap { locationManager.locationsStream.first() }
+            .flatMap { locationManager.getLocationsStream().first() }
             .compactMap { $0.last }
             .eraseToAnyPublisher()
     }

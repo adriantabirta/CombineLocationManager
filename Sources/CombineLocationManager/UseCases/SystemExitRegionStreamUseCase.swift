@@ -2,14 +2,14 @@
 //  SystemExitRegionStreamUseCase.swift
 //
 //
-//  Created by at-plan-net on 02.02.2023.
+//  Created by at on 02.02.2023.
 //
 
 import Combine
 
 public protocol SystemExitRegionStreamUseCase {
     
-    func execute() -> AnyPublisher<SystemRegion, Never>
+    func execute<T: SystemRegion>() -> AnyPublisher<T, Never> where T.Constraint: SystemBeaconIdentityConstraint
 }
 
 public struct RealSystemExitRegionStreamUseCase {
@@ -25,11 +25,11 @@ public struct RealSystemExitRegionStreamUseCase {
     }
 }
 
-// MARK: - SystemExitRegionStreamUseCase
+// MARK: - SystemExitRegionStreamUseCase implementation
 
 extension RealSystemExitRegionStreamUseCase: SystemExitRegionStreamUseCase {
     
-    public func execute() -> AnyPublisher<SystemRegion, Never> {
-        locationManagerDelegate.exitRegionStream
+    public func execute<T>() -> AnyPublisher<T, Never> where T: SystemRegion, T.Constraint: SystemBeaconIdentityConstraint {
+        locationManagerDelegate.getExitRegionStream()
     }
 }

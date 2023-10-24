@@ -2,32 +2,32 @@
 //  SystemGetMonitoredRegionsUseCase.swift
 //
 //
-//  Created by at-plan-net on 02.02.2023.
+//  Created by at on 02.02.2023.
 //
 
 public protocol SystemGetMonitoredRegionsUseCase {
     
-    func execute() -> Set<SystemRegion>
+    func execute<T: SystemRegion>() -> [T]
 }
 
 public struct RealSystemGetMonitoredRegionsUseCase {
     
     // MARK: - Properties
-
+    
     private let locationManager: SystemLocationManager
     
     // MARK: - Init
-
+    
     public init(_ locationManager: SystemLocationManager) {
         self.locationManager = locationManager
     }
 }
 
-// MARK: - SystemGetMonitoredRegionsUseCase
+// MARK: - SystemGetMonitoredRegionsUseCase implementation
 
 extension RealSystemGetMonitoredRegionsUseCase: SystemGetMonitoredRegionsUseCase {
     
-    public func execute() -> Set<SystemRegion> {
-        locationManager.currentMonitoredRegions
+    public func execute<T>() -> [T] where T: SystemRegion {
+        locationManager.getCurrentMonitoredRegions()
     }
 }

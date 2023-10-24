@@ -2,12 +2,12 @@
 //  SystemStartMonitoringRegionUseCase.swift
 //
 //
-//  Created by at-plan-net on 09.02.2023.
+//  Created by at on 09.02.2023.
 //
 
 public protocol SystemStartMonitoringRegionUseCase {
     
-    func execute(_ region: RegionProtocol)
+    func execute<T: SystemGenericRegion>(_ region: T)
 }
 
 public struct RealSystemStartMonitoringRegionUseCase {
@@ -23,11 +23,11 @@ public struct RealSystemStartMonitoringRegionUseCase {
     }
 }
 
-// MARK: - SystemStartMonitoringRegionUseCase
+// MARK: - SystemStartMonitoringRegionUseCase implementation
 
 extension RealSystemStartMonitoringRegionUseCase: SystemStartMonitoringRegionUseCase {
     
-    public func execute(_ region: RegionProtocol) {
+    public func execute<T>(_ region: T) where T: SystemGenericRegion {
         locationManager.startMonitoring(for: region)
     }
 }

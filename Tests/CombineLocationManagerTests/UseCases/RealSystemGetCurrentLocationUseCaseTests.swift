@@ -2,7 +2,7 @@
 //  RealSystemGetCurrentLocationUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 28.04.2023.
+//  Created by at on 28.04.2023.
 //
 
 import XCTest
@@ -49,11 +49,11 @@ extension RealSystemGetCurrentLocationUseCaseTests {
     func testExecuteOk() {
         let expectation = expectation(description: "RealSystemGetCurrentLocationUseCaseTests::testExecuteOk")
         
-        let expectedResult = SystemLocation.stub()
+        let expectedResult = SystemLocationStub.stub()
         
-        locationManager.stubbedLocationsStream = Just([expectedResult]).setFailureType(to: Error.self).eraseToAnyPublisher()
+        locationManager.stubbedGetLocationsStreamResult = Just([expectedResult]).setFailureType(to: Error.self).eraseToAnyPublisher()
         
-        tested.execute()
+        (tested.execute() as AnyPublisher<SystemLocationStub, Error>)
             .sink(
                 receiveCompletion: { completion in
                     if case .failure = completion {
@@ -62,7 +62,7 @@ extension RealSystemGetCurrentLocationUseCaseTests {
                 }, receiveValue: { result in
                     XCTAssertEqual(result, expectedResult, "Should be not nil")
                     XCTAssertEqual(self.locationManager.invokedRequestLocationCount, 1, "Should be not nil")
-                    XCTAssertEqual(self.locationManager.invokedLocationsStreamGetterCount, 1, "Should be not nil")
+                    XCTAssertEqual(self.locationManager.invokedGetLocationsStreamCount, 1, "Should be not nil")
                     expectation.fulfill()
                 }
             )

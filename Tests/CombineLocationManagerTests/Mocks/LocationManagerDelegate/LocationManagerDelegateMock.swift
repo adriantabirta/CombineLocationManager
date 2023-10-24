@@ -2,7 +2,7 @@
 //  LocationManagerDelegateMock.swift
 //
 //
-//  Created by at-plan-net on 02.03.2023.
+//  Created by at on 02.03.2023.
 //
 
 import Combine
@@ -10,66 +10,6 @@ import Foundation
 @testable import CombineLocationManager
 
 class LocationManagerDelegateMock: NSObject, LocationManagerDelegate {
-
-    var invokedLocationsStreamGetter = false
-    var invokedLocationsStreamGetterCount = 0
-    var stubbedLocationsStream: AnyPublisher<[SystemLocation], Error>!
-
-    var locationsStream: AnyPublisher<[SystemLocation], Error> {
-        invokedLocationsStreamGetter = true
-        invokedLocationsStreamGetterCount += 1
-        return stubbedLocationsStream
-    }
-
-    var invokedDidUpdateHeadingStreamGetter = false
-    var invokedDidUpdateHeadingStreamGetterCount = 0
-    var stubbedDidUpdateHeadingStream: AnyPublisher<SystemHeading, Never>!
-
-    var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> {
-        invokedDidUpdateHeadingStreamGetter = true
-        invokedDidUpdateHeadingStreamGetterCount += 1
-        return stubbedDidUpdateHeadingStream
-    }
-
-    var invokedEnterRegionStreamGetter = false
-    var invokedEnterRegionStreamGetterCount = 0
-    var stubbedEnterRegionStream: AnyPublisher<SystemRegion, Never>!
-
-    var enterRegionStream: AnyPublisher<SystemRegion, Never> {
-        invokedEnterRegionStreamGetter = true
-        invokedEnterRegionStreamGetterCount += 1
-        return stubbedEnterRegionStream
-    }
-
-    var invokedExitRegionStreamGetter = false
-    var invokedExitRegionStreamGetterCount = 0
-    var stubbedExitRegionStream: AnyPublisher<SystemRegion, Never>!
-
-    var exitRegionStream: AnyPublisher<SystemRegion, Never> {
-        invokedExitRegionStreamGetter = true
-        invokedExitRegionStreamGetterCount += 1
-        return stubbedExitRegionStream
-    }
-
-    var invokedDidRangeBeaconsGetter = false
-    var invokedDidRangeBeaconsGetterCount = 0
-    var stubbedDidRangeBeacons: AnyPublisher<[SystemBeacon], Error>!
-
-    var didRangeBeacons: AnyPublisher<[SystemBeacon], Error> {
-        invokedDidRangeBeaconsGetter = true
-        invokedDidRangeBeaconsGetterCount += 1
-        return stubbedDidRangeBeacons
-    }
-
-    var invokedDidDetermineStateForRegionGetter = false
-    var invokedDidDetermineStateForRegionGetterCount = 0
-    var stubbedDidDetermineStateForRegion: AnyPublisher<(SystemRegionState, SystemRegion), Never>!
-
-    var didDetermineStateForRegion: AnyPublisher<(SystemRegionState, SystemRegion), Never> {
-        invokedDidDetermineStateForRegionGetter = true
-        invokedDidDetermineStateForRegionGetterCount += 1
-        return stubbedDidDetermineStateForRegion
-    }
 
     var invokedDidChangeAuthorizationGetter = false
     var invokedDidChangeAuthorizationGetterCount = 0
@@ -89,5 +29,65 @@ class LocationManagerDelegateMock: NSObject, LocationManagerDelegate {
         invokedDidFailWithErrorGetter = true
         invokedDidFailWithErrorGetterCount += 1
         return stubbedDidFailWithError
+    }
+
+    var invokedGetLocationsStream = false
+    var invokedGetLocationsStreamCount = 0
+    var stubbedGetLocationsStreamResult: AnyPublisher<[Any], Error>!
+
+    func getLocationsStream<T: SystemLocation>() -> AnyPublisher<[T], Error> where T.Coordinate: SystemCoordinate {
+        invokedGetLocationsStream = true
+        invokedGetLocationsStreamCount += 1
+        return stubbedGetLocationsStreamResult.map { $0.compactMap { $0 as? T } }.eraseToAnyPublisher()
+    }
+
+    var invokedDidUpdateHeadingStream = false
+    var invokedDidUpdateHeadingStreamCount = 0
+    var stubbedDidUpdateHeadingStreamResult: AnyPublisher<Any, Never>!
+
+    func didUpdateHeadingStream<T: SystemHeading>() -> AnyPublisher<T, Never> {
+        invokedDidUpdateHeadingStream = true
+        invokedDidUpdateHeadingStreamCount += 1
+        return stubbedDidUpdateHeadingStreamResult.compactMap { $0 as? T }.eraseToAnyPublisher()
+    }
+
+    var invokedGetEnterRegionStream = false
+    var invokedGetEnterRegionStreamCount = 0
+    var stubbedGetEnterRegionStreamResult: AnyPublisher<Any, Never>!
+
+    func getEnterRegionStream<T: SystemRegion>() -> AnyPublisher<T, Never> where T.Constraint: SystemBeaconIdentityConstraint {
+        invokedGetEnterRegionStream = true
+        invokedGetEnterRegionStreamCount += 1
+        return stubbedGetEnterRegionStreamResult.compactMap { $0 as? T }.eraseToAnyPublisher()
+    }
+
+    var invokedGetExitRegionStream = false
+    var invokedGetExitRegionStreamCount = 0
+    var stubbedGetExitRegionStreamResult: AnyPublisher<Any, Never>!
+
+    func getExitRegionStream<T: SystemRegion>() -> AnyPublisher<T, Never> where T.Constraint: SystemBeaconIdentityConstraint {
+        invokedGetExitRegionStream = true
+        invokedGetExitRegionStreamCount += 1
+        return stubbedGetExitRegionStreamResult.compactMap { $0 as? T }.eraseToAnyPublisher()
+    }
+
+    var invokedDidRangeBeacons = false
+    var invokedDidRangeBeaconsCount = 0
+    var stubbedDidRangeBeaconsResult: AnyPublisher<[Any], Error>!
+
+    func didRangeBeacons<T: SystemBeacon>() -> AnyPublisher<[T], Error> where T.Constraint: SystemBeaconIdentityConstraint {
+        invokedDidRangeBeacons = true
+        invokedDidRangeBeaconsCount += 1
+        return stubbedDidRangeBeaconsResult.compactMap { $0.compactMap { $0 as? T } }.eraseToAnyPublisher()
+    }
+
+    var invokedDidDetermineStateForRegion = false
+    var invokedDidDetermineStateForRegionCount = 0
+    var stubbedDidDetermineStateForRegionResult: AnyPublisher<(SystemRegionState, Any), Never>!
+
+    func didDetermineStateForRegion<T: SystemRegion>() -> AnyPublisher<(SystemRegionState, T), Never> where T.Constraint: SystemBeaconIdentityConstraint {
+        invokedDidDetermineStateForRegion = true
+        invokedDidDetermineStateForRegionCount += 1
+        return stubbedDidDetermineStateForRegionResult.compactMap { $0 as? (SystemRegionState, T) }.eraseToAnyPublisher()
     }
 }

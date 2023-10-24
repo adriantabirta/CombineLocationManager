@@ -2,17 +2,31 @@
 //  SystemCoordinateStub.swift
 //
 //
-//  Created by at-plan-net on 01.03.2023.
+//  Created by at on 01.03.2023.
 //
 
 @testable import CombineLocationManager
 
-extension SystemCoordinate: Stubbable {
+struct SystemCoordinateStub: SystemCoordinate, Equatable {
     
-    static func stub() -> SystemCoordinate {
-        .init(
-            latitude: 1.1,
-            longitude: 2.2
-        )
+    private(set) var latitude: Double
+    
+    private(set) var longitude: Double
+    
+    init() {
+        latitude = .zero
+        longitude = .zero
+    }
+    
+    init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+}
+
+extension SystemCoordinateStub: Stubbable {
+    
+    static func stub() -> SystemCoordinateStub {
+        .init(latitude: 1.1, longitude: 2.2)
     }
 }

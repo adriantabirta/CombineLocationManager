@@ -2,7 +2,7 @@
 //  LocationManagerDelegate.swift
 //  LocationManagerCombineImplementation
 //
-//  Created by at-plan-net on 27.02.2023.
+//  Created by at on 27.02.2023.
 //
 
 import Combine
@@ -12,17 +12,17 @@ public protocol LocationManagerDelegate: CLLocationManagerDelegate {
     
     // MARK: - Streams
     
-    var locationsStream: AnyPublisher<[SystemLocation], Error> { get }
+    func getLocationsStream<T: SystemLocation>() -> AnyPublisher<[T], Error> where T.Coordinate: SystemCoordinate
     
-    var didUpdateHeadingStream: AnyPublisher<SystemHeading, Never> { get }
+    func didUpdateHeadingStream<T: SystemHeading>() -> AnyPublisher<T, Never>
     
-    var enterRegionStream: AnyPublisher<SystemRegion, Never> { get }
+    func getEnterRegionStream<T: SystemRegion>() -> AnyPublisher<T, Never> where T.Constraint: SystemBeaconIdentityConstraint
     
-    var exitRegionStream: AnyPublisher<SystemRegion, Never> { get }
+    func getExitRegionStream<T: SystemRegion>() -> AnyPublisher<T, Never> where T.Constraint: SystemBeaconIdentityConstraint
     
-    var didRangeBeacons: AnyPublisher<[SystemBeacon], Error> { get }
+    func didRangeBeacons<T: SystemBeacon>() -> AnyPublisher<[T], Error> where T.Constraint: SystemBeaconIdentityConstraint
     
-    var didDetermineStateForRegion: AnyPublisher<(SystemRegionState, SystemRegion), Never> { get }
+    func didDetermineStateForRegion<T: SystemRegion>() -> AnyPublisher<(SystemRegionState, T), Never> where T.Constraint: SystemBeaconIdentityConstraint
     
     var didChangeAuthorization: AnyPublisher<SystemLocationAuthorizationStatus, Never> { get }
     

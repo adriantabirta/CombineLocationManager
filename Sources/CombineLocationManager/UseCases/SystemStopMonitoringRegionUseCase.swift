@@ -2,12 +2,12 @@
 //  SystemStopMonitoringRegionUseCase.swift
 //
 //
-//  Created by at-plan-net on 09.02.2023.
+//  Created by at on 09.02.2023.
 //
 
 public protocol SystemStopMonitoringRegionUseCase {
     
-    func execute(_ region: RegionProtocol)
+    func execute(_ region: SystemGenericRegion)
 }
 
 public struct RealSystemStopMonitoringRegionUseCase {
@@ -23,11 +23,11 @@ public struct RealSystemStopMonitoringRegionUseCase {
     }
 }
 
-// MARK: - SystemStopMonitoringRegionUseCase
+// MARK: - SystemStopMonitoringRegionUseCase implementation
 
 extension RealSystemStopMonitoringRegionUseCase: SystemStopMonitoringRegionUseCase {
     
-    public func execute(_ region: RegionProtocol) {
+    public func execute(_ region: SystemGenericRegion) {
         locationManager.stopMonitoring(for: region)
     }
 }

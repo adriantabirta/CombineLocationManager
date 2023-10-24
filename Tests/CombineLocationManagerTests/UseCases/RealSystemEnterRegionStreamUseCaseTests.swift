@@ -2,7 +2,7 @@
 //  RealSystemEnterRegionStreamUseCaseTests.swift
 //
 //
-//  Created by at-plan-net on 01.03.2023.
+//  Created by at on 01.03.2023.
 //
 
 import XCTest
@@ -23,9 +23,9 @@ final class RealSystemEnterRegionStreamUseCaseTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-                
+        
         locationManagerDelegate = LocationManagerDelegateMock()
-
+        
         tested = .init(locationManagerDelegate)
         
         cancellables = .init()
@@ -33,7 +33,7 @@ final class RealSystemEnterRegionStreamUseCaseTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-                
+        
         tested = nil
         
         locationManagerDelegate = nil
@@ -49,14 +49,14 @@ extension RealSystemEnterRegionStreamUseCaseTests {
     func testExecuteOk() {
         let expectation = expectation(description: "RealSystemEnterRegionStreamUseCaseTests::testExecuteOk")
         
-        let expectedResult = SystemRegion.stub()
+        let expectedResult = SystemRegionStub.stub()
         
-        locationManagerDelegate.stubbedEnterRegionStream = Just(expectedResult).eraseToAnyPublisher()
+        locationManagerDelegate.stubbedGetEnterRegionStreamResult = Just(expectedResult).eraseToAnyPublisher()
         
-        tested.execute()
+        (tested.execute() as AnyPublisher<SystemRegionStub, Never>)
             .sink(receiveValue: { result in
                 XCTAssertEqual(result, expectedResult, "Should be not nil")
-                XCTAssertEqual(self.locationManagerDelegate.invokedEnterRegionStreamGetterCount, 1, "Should be not nil")
+                XCTAssertEqual(self.locationManagerDelegate.invokedGetEnterRegionStreamCount, 1, "Should be not nil")
                 expectation.fulfill()
             })
             .store(in: &cancellables)

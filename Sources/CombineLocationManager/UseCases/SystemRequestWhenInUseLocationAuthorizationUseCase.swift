@@ -2,7 +2,7 @@
 //  SystemRequestWhenInUseLocationAuthorizationUseCase.swift
 //
 //
-//  Created by at-plan-net on 01.03.2023.
+//  Created by at on 01.03.2023.
 //
 
 public protocol SystemRequestWhenInUseLocationAuthorizationUseCase {
@@ -23,7 +23,7 @@ public struct RealSystemRequestWhenInUseLocationAuthorizationUseCase {
     }
 }
 
-// MARK: - SystemRequestWhenInUseLocationAuthorizationUseCase
+// MARK: - SystemRequestWhenInUseLocationAuthorizationUseCase implementation
 
 extension RealSystemRequestWhenInUseLocationAuthorizationUseCase: SystemRequestWhenInUseLocationAuthorizationUseCase {
     
