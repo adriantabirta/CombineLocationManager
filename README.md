@@ -2,6 +2,8 @@
 
 CombineLocationManager - swift `CLLocationManager` & `CLLocationManagerDelegate` exposed as Combine publishers
 
+[read medium post about](https://medium.com/@adriantabirta_80636/ios-cllocationmanager-well-done-4d8c1e8185f9)
+
 This package try to solve:
 
 - [x] Avoid system clases that lead to unexpected crashes like `CLBeacon` due to private initializer.
