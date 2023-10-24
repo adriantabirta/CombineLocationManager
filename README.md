@@ -90,6 +90,6 @@ func locationStream() {
 ## Contribution
 This repo is in active development state, so feel free to open PR, issues & missing features.
 Future SPM targets that may be useful:
-* CombineLocationManagerAsync - for async await 
-* CombineLocationManagerRx - for RxSwift
+* LocationManagerAsync - for async await 
+* LocationManagerRx - for RxSwift
 
